@@ -37,16 +37,14 @@ public class Client {
 
     }
 
-    public void start(String ip_address, int port){
+    public void start(){
 
-
-        client = connect(ip_address, port);
 
         if (client != null){
 
             Thread listener = new Thread(this.listener);
 
-            listener.run();
+            listener.start();
 
             Thread kb = new Thread(() -> {
 
@@ -65,10 +63,9 @@ public class Client {
             });
 
             kb.start();
-        }
-
-
-        System.out.println("Failure to connect to server");
+        }else{
+            System.out.println("Failure to connect to server");
+       }
     }
 
     private Socket connect(String ip_address, int port){

@@ -2,7 +2,6 @@ package rudMad;
 
 import rudMad.Server.Server;
 import rudMad.Client.Client;
-import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
@@ -15,11 +14,11 @@ public class Main {
 
         switch (args[0]){
             case "-s":
-                startServer();
+                startServer(Integer.parseInt(args[1]));
                 break;
 
             case "-c":
-                startClient();
+                startClient(args[1], Integer.parseInt(args[2]));
                 break;
             
             default:
@@ -30,13 +29,7 @@ public class Main {
     }
 
 
-    private static void startServer(){
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter a port to open: ");
-
-        int port = scanner.nextInt();
-        scanner.close();
+    private static void startServer(int port){
 
         Server server = new Server(port);
 
@@ -46,18 +39,11 @@ public class Main {
     }
 
 
-    private static void startClient(){
+    private static void startClient(String ip_address, int port){
 
-        Scanner scanner = new Scanner(System.in);
+        Client client = new Client(ip_address, port);
 
-        System.out.println("Enter the port you want to connect to: ");
-
-        int port = scanner.nextInt();
-        scanner.close(); 
-
-        Client client = new Client();
-
-        client.start(port);
+        client.start();
 
     }
     

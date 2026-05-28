@@ -14,13 +14,14 @@ public class Server {
     private ServerSocket server;
 
     public Server(int port){
+
         this.clientList = new ArrayList<>();
 
         try{
-            this.server = new ServerSocket();
+            this.server = new ServerSocket(port);
 
         } catch (IllegalArgumentException error){
-            System.out.println("Port value must be between 0 65553, inclusive");
+            System.out.println("Port value must be between 0-65553, inclusive");
             error.printStackTrace();
 
         }catch (IOException io){
@@ -36,7 +37,8 @@ public class Server {
         boolean power = true;
 
         System.out.println("Server is listening on port " + server.getLocalPort());
-
+        
+        int i = 0;
         while(power){
 
             try {
@@ -45,6 +47,7 @@ public class Server {
                 ClientHandler newClient = new ClientHandler(client, this);
 
                 clientList.add(newClient);
+                System.out.println("New Connection was made: " + i + 1);
 
                 Thread thread = new Thread(newClient);
                 thread.start();
@@ -59,9 +62,11 @@ public class Server {
 
     public void broadcast(String message, ClientHandler handler){
 
+        System.out.println("Broadcasting: " + message);
+
         for(ClientHandler client : clientList){
 
-            if (client != handler){
+            if (client == handler){
                 continue;
             }
 
