@@ -28,4 +28,24 @@ java -jar <jar> -s <portNumber>
 ```
 - portNumber - The port the server will listen on
 
-To run as 
+To run as client
+
+```bash
+java -jar <jar> -c <serverIP> <port>
+```
+
+# Developers
+
+## Requirements
+- Maven 3.9+
+- Java 21 or newer
+
+## Build
+```bash 
+mvn clean package
+```
+
+#Future Features
+- Encryption 
+- GUI
+- User Authentication
