@@ -1,3 +1,8 @@
+/**
+ * This class represents the server
+ * It is responsible for accepting/validating connections.
+ */
+
 package rudMad.Server;
 
 import java.io.IOException;
@@ -5,17 +10,19 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+
+import java.io.BufferedReader;
 
 
 public class Server {
 
-    private ArrayList<ClientHandler> clientList;
+    private HashMap<String,ClientHandler> clientList; 
     private ServerSocket server;
 
     public Server(int port){
 
-        this.clientList = new ArrayList<>();
+        this.clientList = new HashMap<String,ClientHandler>();
 
         try{
             this.server = new ServerSocket(port);
@@ -32,13 +39,16 @@ public class Server {
     
 
 
+    /**
+     * This method is a loop. The server accepts a connection. Checks for 
+     * username uniqueness. Re-Enter the loop, looking for another connection
+     */
     public void start(){
 
         boolean power = true;
 
         System.out.println("Server is listening on port " + server.getLocalPort());
         
-        int i = 0;
         while(power){
 
             try {
@@ -46,13 +56,23 @@ public class Server {
 
                 ClientHandler newClient = new ClientHandler(client, this);
 
-                clientList.add(newClient);
-                System.out.println("New Connection was made: " + i + 1);
+                //Get the username
+                BufferedReader reader = newClient.getInput();
 
-                Thread thread = new Thread(newClient);
-                thread.start();
+                String username = reader.readLine();
+
+                if(!(existsUsername(username))){
+                    newClient.setUsername(username);
+                    clientList.put(username, newClient);
+                    Thread thread = new Thread(newClient);
+                    thread.start();
+
+                }else{
+                    newClient.closeConnection();
+                }
 
             } catch (IOException e){
+                System.out.println("Connection Failed");
                 e.printStackTrace();
             }
 
@@ -60,11 +80,16 @@ public class Server {
 
     }
 
+    /**
+     * This method is responsible of broadcasting a clients message to everyone else on the server
+     * @param message - Message that will be broadcasted
+     * @param handler - Representing the handler responsible for the client sending the message
+     */
     public void broadcast(String message, ClientHandler handler){
 
         System.out.println("Broadcasting: " + message);
 
-        for(ClientHandler client : clientList){
+        for(ClientHandler client : clientList.values()){
 
             if (client == handler){
                 continue;
@@ -73,6 +98,15 @@ public class Server {
             client.sendMessage(message);
         }
 
+    }
+
+    /**
+     * This method is responsible for username duplicates.
+     * @param username - Representing the username to be checked
+     * @return boolean - True if it exists, otherwise false
+     */
+    public boolean existsUsername(String userName){
+        return clientList.containsKey(userName);
     }
     
 }

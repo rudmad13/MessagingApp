@@ -14,6 +14,7 @@ public class ClientHandler implements Runnable{
     private Server server;
     private BufferedReader in; //Data coming into the server from this client
     private BufferedWriter out; //Data going out from the server to this client
+    private String username;//Unique name on the server
 
     public ClientHandler(Socket client, Server server){
         this.client = client;
@@ -26,6 +27,29 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         }
     }
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public BufferedReader getInput(){
+        return this.in;
+    }
+
+    public void closeConnection(){
+        try{
+            client.close();
+
+        } catch (IOException e){
+            System.out.println("Connection has been closed!");
+            e.printStackTrace();
+        }
+    }
+
 
     public void run(){
 
