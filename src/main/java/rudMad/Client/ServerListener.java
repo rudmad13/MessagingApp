@@ -22,8 +22,9 @@ public class ServerListener implements Runnable{
             }
 
         } catch (IOException e){
-            e.printStackTrace();
-        }      
+
+            System.out.println("Connection has been closed!");
+        }
 
 
 

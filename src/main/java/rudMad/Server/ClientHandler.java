@@ -1,3 +1,9 @@
+ /**
+  * The client handler class is responsible for handling the connection and communication
+  * between the server and a single client. 1 Thread is created for each clinet connection.
+  */
+
+
 package rudMad.Server;
 
 import java.net.Socket;
@@ -83,8 +89,5 @@ public class ClientHandler implements Runnable{
         }
 
     }
-
-
-
 
 }

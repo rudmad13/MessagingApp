@@ -50,7 +50,7 @@ public class Client {
 
                 String message = "";
                 while(!(message.equals("quit()"))){
-                    System.out.println("~ ");
+                    System.out.print("~ ");
                     message = scanner.nextLine();
                     sendMessage(out, message);
                 }
