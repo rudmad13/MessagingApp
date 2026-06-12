@@ -87,7 +87,7 @@ public class Server {
      */
     public void broadcast(String message, ClientHandler handler){
 
-        System.out.println("Broadcasting: " + message);
+        //Debug purposes: System.out.println(handler.getUsername() + ": " + message);
 
         for(ClientHandler client : clientList.values()){
 
@@ -107,6 +107,15 @@ public class Server {
      */
     public boolean existsUsername(String userName){
         return clientList.containsKey(userName);
+    }
+
+
+    /**
+     * This method is responsible for removing a client from the server
+     * @param username - Representing the username of the client to be removed
+     */
+    public void removeClient(String username){
+        clientList.remove(username);
     }
     
 }

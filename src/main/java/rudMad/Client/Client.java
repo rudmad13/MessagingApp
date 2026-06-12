@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+//TODO: Add username field to client class. Figure out a way to send the usernname to the server.
+
 public class Client {
 
     private Socket client;
@@ -37,6 +39,13 @@ public class Client {
 
     }
 
+
+    /**
+     * This method is responsible for starting the client.
+     * It starts a thread to listen for incoming messages from the server
+     * Another thread is started to listen for user input from the keyboard and send it to the server
+     * If the user types "quit()", the client will disconnect from the server and close the connection
+     */
     public void start(){
 
 
