@@ -11,22 +11,6 @@ import java.io.BufferedReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-//TODO: Add username field to client class. Figure out a way to send the usernname to the server.
-/**
- * How to implement the username feature
- * username must be unique
- * When a client connects to the server, the server will receive the username as
- * the first message from the client.
- * If the sever receives a username that is not valid it will close the
- * connection with the client.
- * Otherwise the client will be added to the server's client list.
- * 
- * Step 1) Add a Username field to the Client class. Add a getter and Setter for
- * the username field.
- * Step 2) When the client connects to the server, the client will send a
- * message to the server with the username.
- * This will be the first message sent to the server.
- */
 
 public class Client {
 
@@ -128,18 +112,6 @@ public class Client {
         return false;
     }
 
-    private boolean isConnectionOpen() {
-
-        try {
-            if (in.readLine() == null) {
-            }
-        } catch (IOException e) {
-            System.out.println("Connection has been closed!");
-            e.printStackTrace();
-        }
-
-        return true;
-    }
 
     private boolean usernameAccepted() {
         try {

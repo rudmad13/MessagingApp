@@ -8,8 +8,6 @@ This project was created to provide a simple way to communicate with friends wit
  - Supports multiple concurrent client connections
  - Server broadcasts all messages to clients connected to server
 
-
-
  # Installation
 
  ## Requirements
