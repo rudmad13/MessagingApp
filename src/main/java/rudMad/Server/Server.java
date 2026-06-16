@@ -66,8 +66,11 @@ public class Server {
                     clientList.put(username, newClient);
                     Thread thread = new Thread(newClient);
                     thread.start();
+                    newClient.sendMessage("ACCEPTED");
+                    System.out.println(username + " has connected to the server!");
 
                 }else{
+                    newClient.sendMessage("REJECTED");
                     newClient.closeConnection();
                 }
 
@@ -95,7 +98,7 @@ public class Server {
                 continue;
             }
 
-            client.sendMessage(message);
+            client.sendMessage(handler.getUsername() + ": " + message);
         }
 
     }
@@ -109,13 +112,13 @@ public class Server {
         return clientList.containsKey(userName);
     }
 
-
     /**
      * This method is responsible for removing a client from the server
      * @param username - Representing the username of the client to be removed
      */
     public void removeClient(String username){
         clientList.remove(username);
+        System.out.println(username + " has disconnected from the server!");
     }
     
 }

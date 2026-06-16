@@ -18,7 +18,7 @@ public class Main {
                 break;
 
             case "-c":
-                startClient(args[1], Integer.parseInt(args[2]));
+                startClient(args[1], Integer.parseInt(args[2]), args[3]);
                 break;
             
             default:
@@ -39,9 +39,9 @@ public class Main {
     }
 
 
-    private static void startClient(String ip_address, int port){
+    private static void startClient(String ip_address, int port, String username){
 
-        Client client = new Client(ip_address, port);
+        Client client = new Client(ip_address, port, username);
 
         client.start();
 

@@ -31,7 +31,7 @@ java -jar <jar> -s <portNumber>
 To run as client
 
 ```bash
-java -jar <jar> -c <serverIP> <port>
+java -jar <jar> -c <serverIP> <port> <username>
 ```
 
 # Developers
@@ -46,6 +46,7 @@ mvn clean package
 ```
 
 #Future Features
+- Username
 - Encryption 
 - GUI
 - User Authentication
