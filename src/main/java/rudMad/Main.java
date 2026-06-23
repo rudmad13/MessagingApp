@@ -1,7 +1,10 @@
 package rudMad;
 
 import rudMad.Server.Server;
-import rudMad.Client.Client;
+import rudMad.Client.ClientBuilder;
+
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -41,9 +44,12 @@ public class Main {
 
     private static void startClient(String ip_address, int port, String username){
 
-        Client client = new Client(ip_address, port, username);
-
-        client.start();
+        new ClientBuilder()
+            .setHost(ip_address)
+            .setPort(port)
+            .setUsername(username)
+            .setScanner(new Scanner(System.in))
+            .buildAndStart();
 
     }
     
