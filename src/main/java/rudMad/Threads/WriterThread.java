@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+import rudMad.Client.ClientConnection;
+
 
 public class WriterThread implements Runnable {
 
@@ -11,10 +13,10 @@ public class WriterThread implements Runnable {
     private final Scanner scanner;
     private final Socket socket;
 
-    public WriterThread(BufferedWriter out, Scanner scanner, Socket socket) {
-        this.out = out;
-        this.scanner = scanner;
-        this.socket = socket;
+    public WriterThread(ClientConnection connection) {
+        this.out = connection.getOut();
+        this.scanner = new Scanner(System.in);
+        this.socket = connection.getSocket();
     }
 
     @Override

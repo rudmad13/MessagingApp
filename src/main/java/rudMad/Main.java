@@ -1,9 +1,11 @@
 package rudMad;
 
 import rudMad.Server.Server;
-import rudMad.Client.ClientBuilder;
+import rudMad.Client.Client;
+import rudMad.Client.ClientConnection;
+import rudMad.Client.ClientConnectionFactory;
 
-import java.util.Scanner;
+import java.io.IOException;
 
 public class Main {
 
@@ -44,13 +46,13 @@ public class Main {
 
     private static void startClient(String ip_address, int port, String username){
 
-        new ClientBuilder()
-            .setHost(ip_address)
-            .setPort(port)
-            .setUsername(username)
-            .setScanner(new Scanner(System.in))
-            .buildAndStart();
-
-    }
+       try{
+        ClientConnection connection =  ClientConnectionFactory.connect(ip_address, username, port);
+        new Client(connection, username);
+       }catch (IOException e){
+        System.out.println("Unable to connect to server");
+       }
+ 
+    } 
     
 }

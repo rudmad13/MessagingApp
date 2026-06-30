@@ -24,7 +24,7 @@ public class ClientHandshake implements HandShakeProtocol {
 
 
     @Override
-    public boolean handshake() {
+    public boolean handshake() throws IOException{
 
         //Send username to server
 
@@ -35,18 +35,14 @@ public class ClientHandshake implements HandShakeProtocol {
     }
 
     
-    private boolean usernameAccepted() {
-        try {
+    private boolean usernameAccepted() throws IOException{
+
             String response = in.readLine();
             if (response.equals("ACCEPTED")) {
                 return true;
             } else if (response.equals("REJECTED")) {
                 return false;
             }
-        } catch (IOException e) {
-            System.out.println("Connection has been closed!");
-            e.printStackTrace();
-        }
 
         return false;
     }
