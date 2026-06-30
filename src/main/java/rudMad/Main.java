@@ -45,10 +45,9 @@ public class Main {
 
 
     private static void startClient(String ip_address, int port, String username){
-
        try{
         ClientConnection connection =  ClientConnectionFactory.connect(ip_address, username, port);
-        new Client(connection, username);
+        new Client(connection, username).start();
        }catch (IOException e){
         System.out.println("Unable to connect to server");
        }
