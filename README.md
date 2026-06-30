@@ -1,4 +1,4 @@
-# TCP Server (Chat server)
+# Messaging App
 
 ## Description
 This project was created to provide a simple way to communicate with friends without relying on large messaging platforms. It is a multithreaded TCP chat application written in Java that allows mulitple clients to connect to a server and exchange messages in real time.
