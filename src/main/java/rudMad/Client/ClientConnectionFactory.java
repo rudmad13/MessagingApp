@@ -1,5 +1,10 @@
 package rudMad.Client;
 
+/**
+ * This class is responsible for creating the connection object.
+ * 
+ */
+
 import java.io.IOException;
 
 
