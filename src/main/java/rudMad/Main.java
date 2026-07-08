@@ -2,6 +2,11 @@ package rudMad;
 
 import rudMad.Server.Server;
 import rudMad.Client.Client;
+import rudMad.Client.ClientConnection;
+import rudMad.Client.ClientConnectionFactory;
+
+import java.io.IOException;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -40,11 +45,13 @@ public class Main {
 
 
     private static void startClient(String ip_address, int port, String username){
-
-        Client client = new Client(ip_address, port, username);
-
-        client.start();
-
-    }
+       try{
+        ClientConnection connection =  ClientConnectionFactory.connect(ip_address, username, port);
+        new Client(connection, username).start();
+       }catch (IOException e){
+        System.out.println("Unable to connect to server");
+       }
+ 
+    } 
     
 }

@@ -1,4 +1,4 @@
-package rudMad.Client;
+package rudMad.Threads;
 
 import java.io.BufferedReader;
 import java.io.IOException;
