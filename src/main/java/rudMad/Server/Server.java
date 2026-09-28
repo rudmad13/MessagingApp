@@ -12,6 +12,8 @@ import java.net.Socket;
 
 import java.util.HashMap;
 
+import rudMad.Protocol.ServerHandshake;
+
 import java.io.BufferedReader;
 
 
@@ -45,34 +47,20 @@ public class Server {
      */
     public void start(){
 
-        boolean power = true;
+        boolean running = true;
 
         System.out.println("Server is listening on port " + server.getLocalPort());
         
-        while(power){
+        while(running){
 
             try {
                 Socket client = server.accept();
 
                 ClientHandler newClient = new ClientHandler(client, this);
 
-                //Get the username
-                BufferedReader reader = newClient.getInput();
+                ServerHandshake handshake = new ServerHandshake(newClient, clientList);
 
-                String username = reader.readLine();
-
-                if(!(existsUsername(username))){
-                    newClient.setUsername(username);
-                    clientList.put(username, newClient);
-                    Thread thread = new Thread(newClient);
-                    thread.start();
-                    newClient.sendMessage("ACCEPTED");
-                    System.out.println(username + " has connected to the server!");
-
-                }else{
-                    newClient.sendMessage("REJECTED");
-                    newClient.closeConnection();
-                }
+                handshake.handshake();
 
             } catch (IOException e){
                 System.out.println("Connection Failed");

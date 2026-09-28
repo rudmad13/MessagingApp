@@ -67,7 +67,6 @@ public class ClientHandler implements Runnable{
     /**
      * This method is responsible for receiving messages from the client and sending them to the server
      * to be broadcasted to everyone else on the server
-     * Also, if the client disconnects, the server will be notified to remove the client from the server
      */
     public void receiveMessage(){ // Send to the server
         try{
