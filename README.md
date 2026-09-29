@@ -23,6 +23,9 @@ Complete the one-time [server TLS setup](#server-tls-setup) or
 
 Replace the keystore path and password with your server's values:
 
+-s - server mode
+'5000' - The port the server is listening on
+
 ```powershell
 java "-Djavax.net.ssl.keyStore=C:\path\to\server.p12" "-Djavax.net.ssl.keyStorePassword=YOUR_PASSWORD" "-Djavax.net.ssl.keyStoreType=PKCS12" -jar target/Tcpserver-1.0-SNAPSHOT.jar -s 5000
 ```
@@ -30,6 +33,11 @@ java "-Djavax.net.ssl.keyStore=C:\path\to\server.p12" "-Djavax.net.ssl.keyStoreP
 ### Client
 
 Replace the truststore path and password with your client's values:
+
+-c - client mode
+'localhost' - The servers IP
+'5000' - The port the server is listening on
+'alice' - Client's username
 
 ```powershell
 java "-Djavax.net.ssl.trustStore=C:\path\to\client-truststore.p12" "-Djavax.net.ssl.trustStorePassword=YOUR_PASSWORD" "-Djavax.net.ssl.trustStoreType=PKCS12" -jar target/Tcpserver-1.0-SNAPSHOT.jar -c localhost 5000 alice
