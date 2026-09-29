@@ -1,20 +1,14 @@
 package rudMad.Protocol;
 
-/**
- * This class is responsible for handling the handshake protocol between the client and the server.
- * It sends the username to the server and waits for a response.
- * If the server accepts the username, it returns true, otherwise false.
- */
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+/** Sends the username over the established TLS connection and awaits admission. */
 public class ClientHandshake implements HandShakeProtocol {
-
-    private BufferedWriter out;
-    private BufferedReader in;
-    private String username;
+    private final BufferedWriter out;
+    private final BufferedReader in;
+    private final String username;
 
     public ClientHandshake(BufferedWriter out, BufferedReader in, String username) {
         this.out = out;
@@ -22,42 +16,20 @@ public class ClientHandshake implements HandShakeProtocol {
         this.username = username;
     }
 
-
     @Override
-    public boolean handshake() throws IOException{
-
-        //Send username to server
-
-        sendMessage(username);
-
-        //Servers response to the username. If its accepted then return true, otherwise false.
-        return usernameAccepted();
-    }
-
-    
-    private boolean usernameAccepted() throws IOException{
-
-            String response = in.readLine();
-            if (response.equals("ACCEPTED")) {
-                return true;
-            } else if (response.equals("REJECTED")) {
-                return false;
-            }
-
-        return false;
-    }
-
-        
-    private void sendMessage(String message) {
-
-        try {
-            out.write(message);
-            out.newLine();
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public boolean handshake() throws IOException {
+        out.write(username);
+        out.newLine();
+        out.flush();
+        String response = in.readLine();
+        if (ACCEPTED.equals(response)) {
+            return true;
         }
+        if (REJECTED.equals(response)) {
+            return false;
+        }
+        throw new IOException(response == null
+                ? "Server closed the connection during username handshake."
+                : "Unexpected server response during username handshake.");
     }
-
-
 }

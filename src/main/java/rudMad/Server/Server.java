@@ -7,40 +7,33 @@ package rudMad.Server;
 
 import java.io.IOException;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
+
 
 import java.util.HashMap;
 
 import rudMad.Protocol.ServerHandshake;
 
-import java.io.BufferedReader;
+
 
 
 public class Server {
 
     private HashMap<String,ClientHandler> clientList; 
-    private ServerSocket server;
+    private final SSLServerSocket server;
 
-    public Server(int port){
-
-        this.clientList = new HashMap<String,ClientHandler>();
-
-        try{
-            this.server = new ServerSocket(port);
-
-        } catch (IllegalArgumentException error){
-            System.out.println("Port value must be between 0-65553, inclusive");
-            error.printStackTrace();
-
-        }catch (IOException io){
-            System.out.println("Error when opening the socket");
-            io.printStackTrace();
+    public Server(int port) throws IOException {
+        this.clientList = new HashMap<String, ClientHandler>();
+        if (System.getProperty("javax.net.ssl.keyStore") == null) {
+            throw new IOException("Set javax.net.ssl.keyStore to a keystore containing the server certificate and private key.");
         }
+        SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+        this.server = (SSLServerSocket) factory.createServerSocket(port);
+        this.server.setEnabledProtocols(new String[] {"TLSv1.3"});
+        this.server.setNeedClientAuth(false);
     }
-    
-
-
     /**
      * This method is a loop. The server accepts a connection. Checks for 
      * username uniqueness. Re-Enter the loop, looking for another connection
@@ -49,20 +42,32 @@ public class Server {
 
         boolean running = true;
 
-        System.out.println("Server is listening on port " + server.getLocalPort());
+        System.out.println("TLS server is listening on port " + server.getLocalPort());
         
         while(running){
 
+            SSLSocket client = null;
             try {
-                Socket client = server.accept();
+                client = (SSLSocket) server.accept();
+                client.setSoTimeout(10_000);
+                client.startHandshake();
 
                 ClientHandler newClient = new ClientHandler(client, this);
 
                 ServerHandshake handshake = new ServerHandshake(newClient, clientList);
 
-                handshake.handshake();
+                if (handshake.handshake()) {
+                    client.setSoTimeout(0);
+                }
 
             } catch (IOException e){
+                if (client != null) {
+                    try {
+                        client.close();
+                    } catch (IOException closeError) {
+                        e.addSuppressed(closeError);
+                    }
+                }
                 System.out.println("Connection Failed");
                 e.printStackTrace();
             }

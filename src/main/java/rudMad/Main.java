@@ -36,9 +36,12 @@ public class Main {
 
     private static void startServer(int port){
 
-        Server server = new Server(port);
-
-        server.start();
+        try {
+            Server server = new Server(port);
+            server.start();
+        } catch (IOException | IllegalArgumentException e) {
+            System.err.println("Unable to start TLS server: " + e.getMessage());
+        }
 
 
     }
@@ -49,7 +52,7 @@ public class Main {
         ClientConnection connection =  ClientConnectionFactory.connect(ip_address, username, port);
         new Client(connection, username).start();
        }catch (IOException e){
-        System.out.println("Unable to connect to server");
+        System.err.println("Unable to connect to TLS server: " + e.getMessage());
        }
  
     } 
