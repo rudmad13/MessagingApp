@@ -18,21 +18,28 @@ public class ClientConnection {
     private final BufferedWriter out;
     private final BufferedReader in;
 
+
+    /**
+     * Creating a Socket and connection to the server
+     * @throws - IOException. Closes possible server connection
+     */
     public ClientConnection(String host, int port) throws IOException {
+        
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         this.socket = (SSLSocket) factory.createSocket();
+
+        //Configure socket
+        socket.setEnabledProtocols(new String[] {"TLSv1.3"});
+        SSLParameters parameters = socket.getSSLParameters(); 
+        parameters.setEndpointIdentificationAlgorithm("HTTPS");
+        socket.setSSLParameters(parameters);
         try {
-            socket.setEnabledProtocols(new String[] {"TLSv1.3"});
-            SSLParameters parameters = socket.getSSLParameters();
-            // Enable certificate hostname/IP verification for this raw TLS socket.
-            parameters.setEndpointIdentificationAlgorithm("HTTPS");
-            socket.setSSLParameters(parameters);
             socket.connect(new InetSocketAddress(host, port), SETUP_TIMEOUT_MS);
             socket.setSoTimeout(SETUP_TIMEOUT_MS);
             socket.startHandshake();
             this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException | RuntimeException e) {
+        } catch (IOException e) {// If something fails during creation cleanup and rethrow original exception
             try {
                 socket.close();
             } catch (IOException closeError) {
