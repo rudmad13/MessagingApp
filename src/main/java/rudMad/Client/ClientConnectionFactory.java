@@ -22,7 +22,16 @@ public class ClientConnectionFactory {
         //Initial connection to the server
         ClientConnection connection = new ClientConnection(host, port);
         //Start handshake
-        new ClientHandshake(connection.getOut(), connection.getIn(), username);
+        try{
+        new ClientHandshake(connection.getOut(), connection.getIn(), username).handshake();
+        } catch (ProtocolException e){
+            try{
+                connection.close();
+            }catch (IOException error){
+                e.addSuppressed(error);
+            }
+            throw e;
+        }
         connection.getSocket().setSoTimeout(0);
         return connection;
     }

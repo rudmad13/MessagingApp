@@ -6,6 +6,7 @@ import rudMad.Client.ClientConnection;
 import rudMad.Client.ClientConnectionFactory;
 
 import java.io.IOException;
+import java.net.ProtocolException;
 
 public class Main {
 
@@ -51,6 +52,9 @@ public class Main {
        try{
         ClientConnection connection =  ClientConnectionFactory.connect(ip_address, username, port);
         new Client(connection, username).start();
+
+       } catch (ProtocolException e){
+        System.err.println(e.getMessage());
        }catch (IOException e){
         System.err.println("Unable to connect to TLS server: " + e.getMessage());
        }
