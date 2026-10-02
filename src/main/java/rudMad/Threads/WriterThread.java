@@ -14,8 +14,12 @@ public class WriterThread implements Runnable {
     private final Socket socket;
 
     public WriterThread(ClientConnection connection) {
+        this(connection, new Scanner(System.in));
+    }
+
+    public WriterThread(ClientConnection connection, Scanner input) {
         this.out = connection.getOut();
-        this.scanner = new Scanner(System.in);
+        this.scanner = input;
         this.socket = connection.getSocket();
     }
 

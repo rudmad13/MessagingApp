@@ -2,6 +2,7 @@ package rudMad.Client;
 
 import rudMad.Threads.ServerListener;
 import rudMad.Threads.WriterThread;
+import java.util.Scanner;
 
 
 
@@ -11,10 +12,16 @@ public class Client {
 
     private ClientConnection connection;
     private String username;
+    private final Scanner input;
     
 
 
     public Client(ClientConnection connection, String username) {
+        this(connection, username, new Scanner(System.in));
+    }
+
+    public Client(ClientConnection connection, String username, Scanner input) {
+        this.input = input;
         this.connection = connection;
         this.username = username;
     }
@@ -28,7 +35,7 @@ public class Client {
     public void start() {
 
         ServerListener listener = new ServerListener(connection.getIn());
-        WriterThread writer = new WriterThread(connection);
+        WriterThread writer = new WriterThread(connection, input);
 
         Thread listenerThread = new Thread(listener);
         Thread writerThread = new Thread(writer);

@@ -24,7 +24,9 @@ public class ClientConnectionFactory {
         //Start handshake
         try{
         new ClientHandshake(connection.getOut(), connection.getIn(), username).handshake();
-        } catch (ProtocolException e){
+            connection.getSocket().setSoTimeout(0);
+            return connection;
+        } catch (IOException | RuntimeException e){
             try{
                 connection.close();
             }catch (IOException error){
@@ -32,8 +34,6 @@ public class ClientConnectionFactory {
             }
             throw e;
         }
-        connection.getSocket().setSoTimeout(0);
-        return connection;
     }
 }
  

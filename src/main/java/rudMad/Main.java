@@ -3,10 +3,10 @@ package rudMad;
 import rudMad.Server.Server;
 import rudMad.Client.Client;
 import rudMad.Client.ClientConnection;
-import rudMad.Client.ClientConnectionFactory;
+import rudMad.Client.ClientStartup;
 
 import java.io.IOException;
-import java.net.ProtocolException;
+import java.util.Scanner;
 
 public class Main {
 
@@ -24,7 +24,7 @@ public class Main {
                 break;
 
             case "-c":
-                startClient(args[1], Integer.parseInt(args[2]), args[3]);
+                startClient();
                 break;
             
             default:
@@ -48,17 +48,15 @@ public class Main {
     }
 
 
-    private static void startClient(String ip_address, int port, String username){
-       try{
-        ClientConnection connection =  ClientConnectionFactory.connect(ip_address, username, port);
-        new Client(connection, username).start();
-
-       } catch (ProtocolException e){
-        System.err.println(e.getMessage());
-       }catch (IOException e){
-        System.err.println("Unable to connect to TLS server: " + e.getMessage());
-       }
- 
+    private static void startClient() {
+        Scanner input = new Scanner(System.in);
+        ClientStartup startup = new ClientStartup(input);
+        try {
+            ClientConnection connection = startup.start();
+            new Client(connection, startup.getUsername(), input).start();
+        } catch (IOException e) {
+            System.err.println("Unable to start TLS client: " + e.getMessage());
+        }
     } 
     
 }
