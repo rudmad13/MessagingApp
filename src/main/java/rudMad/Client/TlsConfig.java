@@ -56,7 +56,7 @@ public class TlsConfig {
      * @throws CertificateException if a certificate in the store cannot be loaded
      * @throws KeyStoreException if no provider supports the PKCS12 keystore type
      */
-    public static void  validateTrustStore(String path, char[] password)throws IOException, NoSuchAlgorithmException, CertificateException,KeyStoreException{
+    private static void  validateTrustStore(String path, char[] password)throws IOException, NoSuchAlgorithmException, CertificateException,KeyStoreException{
 
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
 

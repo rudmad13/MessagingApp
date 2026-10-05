@@ -29,10 +29,8 @@ public class TlsConnection {
         this.socket = (SSLSocket) factory.createSocket();
 
         //Configure socket
-        socket.setEnabledProtocols(new String[] {"TLSv1.3"});
-        SSLParameters parameters = socket.getSSLParameters(); 
-        parameters.setEndpointIdentificationAlgorithm("HTTPS");
-        socket.setSSLParameters(parameters);
+        configureSocket(socket);
+        
         try {
             socket.connect(new InetSocketAddress(host, port), SETUP_TIMEOUT_MS);
             socket.setSoTimeout(SETUP_TIMEOUT_MS);
@@ -63,5 +61,14 @@ public class TlsConnection {
 
     public void close() throws IOException {
         socket.close();
+    }
+
+
+    private void configureSocket(SSLSocket socket){
+
+        socket.setEnabledProtocols(new String[] {"TLSv1.3"});
+        SSLParameters parameters = socket.getSSLParameters(); 
+        parameters.setEndpointIdentificationAlgorithm("HTTPS");
+        socket.setSSLParameters(parameters);
     }
 }
