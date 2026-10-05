@@ -12,7 +12,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 /** Opens a verified TLS connection and exposes its application streams. */
-public class ClientConnection {
+public class TlsConnection {
     private static final int SETUP_TIMEOUT_MS = 10_000;
     private final SSLSocket socket;
     private final BufferedWriter out;
@@ -23,7 +23,7 @@ public class ClientConnection {
      * Creating a Socket and connection to the server
      * @throws - IOException. Closes possible server connection
      */
-    public ClientConnection(String host, int port) throws IOException {
+    public TlsConnection(String host, int port) throws IOException {
         
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         this.socket = (SSLSocket) factory.createSocket();

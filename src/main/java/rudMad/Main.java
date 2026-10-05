@@ -2,7 +2,7 @@ package rudMad;
 
 import rudMad.Server.Server;
 import rudMad.Client.Client;
-import rudMad.Client.ClientConnection;
+import rudMad.Client.TlsConnection;
 import rudMad.Client.ClientStartup;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         ClientStartup startup = new ClientStartup(input);
         try {
-            ClientConnection connection = startup.start();
+            TlsConnection connection = startup.start();
             new Client(connection, startup.getUsername(), input).start();
         } catch (IOException e) {
             System.err.println("Unable to start TLS client: " + e.getMessage());

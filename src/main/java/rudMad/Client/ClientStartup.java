@@ -25,7 +25,7 @@ public class ClientStartup {
         return username;
     }
 
-    public ClientConnection start() throws IOException {
+    public TlsConnection start() throws IOException {
         String path = readConnectionInput("Enter absolute path of the truststore file: ");
 
         String password = readConnectionInput("Enter the truststore password: ");
@@ -42,10 +42,11 @@ public class ClientStartup {
      * @return the connection after the username handshake succeeds
      * @throws IOException if console input ends before a connection is established
      */
-    public ClientConnection connect() throws IOException {
-        ClientConnection connection = null;
+    public TlsConnection connect() throws IOException {
+        TlsConnection connection = null;
 
         while (connection == null) {
+
             String ip = readConnectionInput("Enter the IP address of the server: ").trim();
             String portInput = readConnectionInput("Enter the port of the server: ").trim();
             String username = readConnectionInput("Enter a username to chat on the server: ");

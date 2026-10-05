@@ -10,17 +10,17 @@ import java.util.Scanner;
 
 public class Client {
 
-    private ClientConnection connection;
+    private TlsConnection connection;
     private String username;
     private final Scanner input;
     
 
 
-    public Client(ClientConnection connection, String username) {
+    public Client(TlsConnection connection, String username) {
         this(connection, username, new Scanner(System.in));
     }
 
-    public Client(ClientConnection connection, String username, Scanner input) {
+    public Client(TlsConnection connection, String username, Scanner input) {
         this.input = input;
         this.connection = connection;
         this.username = username;

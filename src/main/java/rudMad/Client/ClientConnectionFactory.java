@@ -17,10 +17,10 @@ public class ClientConnectionFactory {
      * @throws IOException - Problems occured connection not established
      * @throws ProtocolException - Username was taken!
      */
-    public static ClientConnection connect(String host, String username, int port) throws IOException, ProtocolException {
+    public static TlsConnection connect(String host, String username, int port) throws IOException, ProtocolException {
 
         //Initial connection to the server
-        ClientConnection connection = new ClientConnection(host, port);
+        TlsConnection connection = new TlsConnection(host, port);
         //Start handshake
         try{
         new ClientHandshake(connection.getOut(), connection.getIn(), username).handshake();
