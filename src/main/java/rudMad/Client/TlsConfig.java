@@ -28,7 +28,7 @@ public class TlsConfig {
      * @throws GeneralSecurityException if an integrity-check algorithm is
      *         unavailable or a certificate cannot be loaded
      */
-    public void configureTrustStore(String path, String password) throws IOException, GeneralSecurityException, KeyStoreException{
+    public static void configureTrustStore(String path, String password) throws IOException, GeneralSecurityException, KeyStoreException{
 
         validateTrustStore(path, password.toCharArray());
 
@@ -56,7 +56,7 @@ public class TlsConfig {
      * @throws CertificateException if a certificate in the store cannot be loaded
      * @throws KeyStoreException if no provider supports the PKCS12 keystore type
      */
-    public void validateTrustStore(String path, char[] password)throws IOException, NoSuchAlgorithmException, CertificateException,KeyStoreException{
+    public static void  validateTrustStore(String path, char[] password)throws IOException, NoSuchAlgorithmException, CertificateException,KeyStoreException{
 
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
 

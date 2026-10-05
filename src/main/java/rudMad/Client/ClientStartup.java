@@ -96,7 +96,7 @@ public class ClientStartup {
                 if (path.isBlank()) {
                     throw new IOException("The truststore path cannot be blank.");
                 }
-                config.configureTrustStore(path, password);
+                TlsConfig.configureTrustStore(path, password);
                 configured = true;
             } catch (IOException | GeneralSecurityException | InvalidPathException e) {
                 System.err.println("Unable to configure the truststore: " + e.getMessage());
