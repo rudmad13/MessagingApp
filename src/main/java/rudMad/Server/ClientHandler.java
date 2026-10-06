@@ -46,6 +46,10 @@ public class ClientHandler implements Runnable{
         return this.in;
     }
 
+    public BufferedWriter getOutput(){
+        return this.out;
+    }
+
     public void closeConnection(){
         try{
             client.close();

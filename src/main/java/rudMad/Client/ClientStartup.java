@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.ProtocolException;
 import java.security.GeneralSecurityException;
 import java.util.Scanner;
+
+import rudMad.Protocol.Admission;
 import rudMad.Protocol.ClientHandshake;
 
 public class ClientStartup {
 
     
-    public static Client start(Scanner kb){
+    public static Client start(Scanner kb) throws IOException{
 
         while(true){
             try{
@@ -42,28 +44,24 @@ public class ClientStartup {
             }
         }
 
-
         String username = null;
         while (username == null){
             System.out.println("Enter a username: ");
             String temp = kb.nextLine();
             
             try{
-            if( new ClientHandshake(connection.getOut(), connection.getIn(), temp).handshake()){
-                username = temp;
-            }
+
+                Admission.clientAdmission(connection.getIn(), connection.getOut(), temp);
 
             }catch (ProtocolException e){
                 System.err.println("Username taken!" + e.getMessage());
             } catch (IOException i){
-                System.err.println("Error on server end" + i.getMessage());
+                throw i;
 
             }
         }
 
         return new Client(connection, username);
-
-        
 
     }
 

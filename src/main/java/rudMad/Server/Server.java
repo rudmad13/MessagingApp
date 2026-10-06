@@ -14,6 +14,7 @@ import javax.net.ssl.SSLSocket;
 
 import java.util.HashMap;
 
+import rudMad.Protocol.Admission;
 import rudMad.Protocol.ServerHandshake;
 
 
@@ -54,11 +55,7 @@ public class Server {
 
                 ClientHandler newClient = new ClientHandler(client, this);
 
-                ServerHandshake handshake = new ServerHandshake(newClient, clientList);
-
-                if (handshake.handshake()) {
-                    client.setSoTimeout(0);
-                }
+                Admission.serverAdmission(newClient, clientList);
 
             } catch (IOException e){
                 if (client != null) {

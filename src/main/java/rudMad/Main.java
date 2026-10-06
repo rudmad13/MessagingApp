@@ -48,7 +48,13 @@ public class Main {
 
     private static void startClient() {
         Scanner input = new Scanner(System.in);
-        ClientStartup.start(input).start();
+
+        try{
+            ClientStartup.start(input).start();
+        } catch (IOException e){
+            System.err.println("Lost connection to server during setup!");
+        }
+        
     } 
     
 }
