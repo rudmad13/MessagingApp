@@ -6,7 +6,7 @@ import java.security.GeneralSecurityException;
 import java.util.Scanner;
 
 import rudMad.Protocol.Admission;
-import rudMad.Protocol.ClientHandshake;
+
 
 public class ClientStartup {
 
