@@ -23,15 +23,19 @@ public class Server {
     private HashMap<String,ClientHandler> clientList; 
     private final SSLServerSocket server;
 
-    public Server(int port) throws IOException {
+
+    /**
+     * 
+     * @param port
+     * @throws IOException Network Errors
+     * @throws IllegalArgumentException Port must be between 0 and 65535 inclusive 
+     */
+    public Server(int port) throws IOException, IllegalArgumentException{
         this.clientList = new HashMap<String, ClientHandler>();
-        if (System.getProperty("javax.net.ssl.keyStore") == null) {
-            throw new IOException("Set javax.net.ssl.keyStore to a keystore containing the server certificate and private key.");
-        }
         SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
         this.server = (SSLServerSocket) factory.createServerSocket(port);
         this.server.setEnabledProtocols(new String[] {"TLSv1.3"});
-        this.server.setNeedClientAuth(false);
+        this.server.setNeedClientAuth(false);  
     }
     /**
      * This method is a loop. The server accepts a connection. Checks for 
