@@ -52,6 +52,7 @@ public class Server {
                 client = (SSLSocket) server.accept();
                 client.setSoTimeout(10_000);
                 client.startHandshake();
+                client.setSoTimeout(0);
 
                 ClientHandler newClient = new ClientHandler(client, this);
 

@@ -36,7 +36,7 @@ public class ClientStartup {
             System.out.println("Enter ip address for server: ");
             String ip = kb.nextLine();
             System.out.println("Enter the port the user is entering: ");
-            int port = kb.nextInt();
+            int port = Integer.parseInt(kb.nextLine());
             System.out.println("Enter a username: ");
             String temp = kb.nextLine();
 
