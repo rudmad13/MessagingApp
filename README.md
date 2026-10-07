@@ -1,30 +1,53 @@
 # TCP Server (Chat server)
 
+## Table of contents
+
+- [Description](#description)
+- [Features](#features)
+- [Installation](#installation)
+- [How to run](#how-to-run)
+  - [Server](#server)
+  - [Client](#client)
+- [Developers](#developers)
+  - [Build](#build)
+- [Server TLS setup](#server-tls-setup)
+- [Client TLS setup](#client-tls-setup)
+
 ## Description
-This project was created to provide a simple way to communicate with friends without relying on large messaging platforms. It is a multithreaded TCP chat application written in Java that allows mulitple clients to connect to a server and exchange messages in real time.
+
+This project was created to provide a simple way to communicate with friends without relying on large messaging platforms. It is a multithreaded TCP chat application written in Java that allows multiple clients to connect to a server and exchange messages in real time.
 
 ## Features
- - Thread-per-client server model
- - Supports multiple concurrent client connections
- - Server broadcasts all messages to clients connected to server
 
- # Installation
+- Thread-per-client server model
+- Supports multiple concurrent client connections
+- Server broadcasts messages to connected clients
+- Interactive client setup for the truststore, server address, port, and username
+- TLS 1.3 encryption protects messages in transit between each client and the server
+- Server certificate and hostname verification using a client PKCS12 truststore
 
- ## Requirements
-  - Java 21 or newer
-  - Download JAR file from Releases
- 
+The server decrypts messages to broadcast them; messages are not end-to-end encrypted.
+
+## Installation
+
+### Requirements
+
+- Java 21 or newer
+- Download JAR file from Releases
+
 ## How to run
 
 Complete the one-time [server TLS setup](#server-tls-setup) or
 [client TLS setup](#client-tls-setup) below before running these commands.
+In both commands, replace the JAR path if you downloaded or moved the JAR.
 
 ### Server
 
 Replace the keystore path and password with your server's values:
 
--s - server mode
-'5000' - The port the server is listening on
+- `-s` selects server mode.
+- `5000` is the port the server listens on; change it to your chosen port.
+- The TLS settings must appear before `-jar`.
 
 ```powershell
 java "-Djavax.net.ssl.keyStore=C:\path\to\server.p12" "-Djavax.net.ssl.keyStorePassword=YOUR_PASSWORD" "-Djavax.net.ssl.keyStoreType=PKCS12" -jar target/Tcpserver-1.0-SNAPSHOT.jar -s 5000
@@ -32,38 +55,41 @@ java "-Djavax.net.ssl.keyStore=C:\path\to\server.p12" "-Djavax.net.ssl.keyStoreP
 
 ### Client
 
-Replace the truststore path and password with your client's values:
-
--c - client mode
-'localhost' - The servers IP
-'5000' - The port the server is listening on
-'alice' - Client's username
+Start the client with `-c` to select client mode:
 
 ```powershell
-java "-Djavax.net.ssl.trustStore=C:\path\to\client-truststore.p12" "-Djavax.net.ssl.trustStorePassword=YOUR_PASSWORD" "-Djavax.net.ssl.trustStoreType=PKCS12" -jar target/Tcpserver-1.0-SNAPSHOT.jar -c localhost 5000 alice
+java -jar target/Tcpserver-1.0-SNAPSHOT.jar -c
 ```
 
-In both commands, replace the JAR path if you downloaded or moved the JAR.
-Change 5000 to the server's port. For the client, replace localhost with the
-server's host or IP (which must match its certificate) and alice with your username.
-The TLS settings must appear before -jar.
+The client asks for the following information in order. Enter each value when prompted:
 
-# Developers
+| Prompt | Example value | What to enter |
+| --- | --- | --- |
+| Enter absolute path for truststore: | `C:\path\to\client-truststore.p12` | The full path to the PKCS12 truststore created in [client TLS setup](#client-tls-setup), without surrounding quotes. |
+| Enter password for truststore: | `YOUR_PASSWORD` | The password you chose when creating the truststore. Input is visible as you type. |
+| Enter ip address for server: | `localhost` | The server's hostname or IP address, which must match its certificate. |
+| Enter the port the user is entering: | `5000` | The numeric port the server is listening on. |
+| Enter a username: | `alice` | Your chat username. Choose a name that is not already in use on the server. |
 
-## Requirements
+The client loads its TLS settings from the truststore prompts. The server address,
+port, and username are entered interactively rather than as command-line arguments.
+If the truststore cannot be loaded, the client asks for its path and password again.
+
+Once connected, type a message and press Enter to send it. Type `quit()` and press
+Enter to disconnect.
+
+## Developers
+
+### Development requirements
+
 - Maven 3.9+
 - Java 21 or newer
 
-## Build
-```bash 
+### Build
+
+```bash
 mvn clean package
 ```
-
-#Future Features
-- Username
-- End-to-end encryption
-- GUI
-- User Authentication
 
 ## Server TLS setup
 
@@ -100,21 +126,16 @@ keytool -importcert -alias chat-server -file server-cert.pem -keystore client-tr
 ~~~
 
 Check the certificate fingerprint with the server operator before accepting the import.
-Start the client using that truststore:
+Keep the truststore's absolute path and the password you chose for the client startup
+prompts. Start the client:
 
 ~~~powershell
-java "-Djavax.net.ssl.trustStore=C:\path\to\client-truststore.p12" "-Djavax.net.ssl.trustStorePassword=YOUR_PASSWORD" "-Djavax.net.ssl.trustStoreType=PKCS12" -jar target/Tcpserver-1.0-SNAPSHOT.jar -c localhost 5000 alice
+java -jar target/Tcpserver-1.0-SNAPSHOT.jar -c
 ~~~
+
+Enter the truststore path and password, then the server address, port, and username
+as described in [Client](#client). The client requires a PKCS12 truststore at startup.
 
 The host or IP must match the certificate's Subject Alternative Name. The development
 certificate supports localhost and 127.0.0.1. Certificate trust and address verification
-remain enabled; there is no plaintext fallback. Without an explicit truststore,
-Java's default trusted certificates apply.
-
-Command-line passwords may be visible in shell history and process arguments.
-These commands are intended for local development.
-
-TLS completes before the username handshake. Connection setup uses ten-second read
-timeouts, cleared on acceptance. Server handshakes still run sequentially in the accept
-loop. TLS protects traffic between clients and the server; the server reads messages
-to broadcast them.
+remain enabled; there is no plaintext fallback.
