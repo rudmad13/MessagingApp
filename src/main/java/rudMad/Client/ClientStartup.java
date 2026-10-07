@@ -31,35 +31,26 @@ public class ClientStartup {
         }
 
         TlsConnection connection = null;
-        while (connection == null){
+        String username = null;
+        while (connection == null && username == null){
             System.out.println("Enter ip address for server: ");
             String ip = kb.nextLine();
             System.out.println("Enter the port the user is entering: ");
             int port = kb.nextInt();
+            System.out.println("Enter a username: ");
+            String temp = kb.nextLine();
 
             try{
                 connection = new TlsConnection(ip, port);
-            }catch (IOException e){
+                Admission.clientAdmission(connection.getIn(), connection.getOut(), temp);
+                username = temp;
+            }catch (ProtocolException i){
+                System.err.println("Username is taken!");
+            } catch (IOException e){
                 System.err.println("Unable to connect try again: " + e.getMessage());
             }
         }
 
-        String username = null;
-        while (username == null){
-            System.out.println("Enter a username: ");
-            String temp = kb.nextLine();
-            
-            try{
-
-                Admission.clientAdmission(connection.getIn(), connection.getOut(), temp);
-
-            }catch (ProtocolException e){
-                System.err.println("Username taken!" + e.getMessage());
-            } catch (IOException i){
-                throw i;
-
-            }
-        }
 
         return new Client(connection, username);
 
