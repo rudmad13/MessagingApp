@@ -35,6 +35,7 @@ public class TlsConnection {
             socket.connect(new InetSocketAddress(host, port), SETUP_TIMEOUT_MS);
             socket.setSoTimeout(SETUP_TIMEOUT_MS);
             socket.startHandshake();
+            socket.setSoTimeout(0);
             this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {// If something fails during creation cleanup and rethrow original exception
