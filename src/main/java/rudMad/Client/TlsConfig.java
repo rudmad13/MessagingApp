@@ -45,7 +45,7 @@ public class TlsConfig {
         validatePath(path, password.toCharArray());
 
         System.setProperty("javax.net.ssl.keyStore", path);
-        System.setProperty("javax.net.ssl.ketStorePassword", password);
+        System.setProperty("javax.net.ssl.keyStorePassword", password);
         System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
     }
 
