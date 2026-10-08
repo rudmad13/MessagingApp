@@ -61,6 +61,7 @@ public class Server {
                 Admission.serverAdmission(newClient, clientList);
 
             } catch (IOException e){
+                e.printStackTrace();
                 
             }
 
@@ -111,7 +112,7 @@ public class Server {
 
         }catch (IOException e){
         }
-        
+
         clientList.remove(client.getUsername());
         System.out.println(client.getUsername()+ " has disconnected from the server!");
     }
