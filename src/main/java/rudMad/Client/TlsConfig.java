@@ -30,7 +30,7 @@ public class TlsConfig {
      */
     public static void configureTrustStore(String path, String password) throws IOException, GeneralSecurityException, KeyStoreException{
 
-        validateTrustStore(path, password.toCharArray());
+        validatePath(path, password.toCharArray());
 
         //Set the system properties for the SSL configs
         System.setProperty("javax.net.ssl.trustStore", path);
@@ -38,6 +38,15 @@ public class TlsConfig {
         System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
 
 
+    }
+
+    public static void configureKeyStore(String path, String password) throws IOException, GeneralSecurityException, KeyStoreException{
+
+        validatePath(path, password.toCharArray());
+
+        System.setProperty("javax.net.ssl.keyStore", path);
+        System.setProperty("javax.net.ssl.ketStorePassword", password);
+        System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
     }
 
 
@@ -56,7 +65,7 @@ public class TlsConfig {
      * @throws CertificateException if a certificate in the store cannot be loaded
      * @throws KeyStoreException if no provider supports the PKCS12 keystore type
      */
-    private static void  validateTrustStore(String path, char[] password)throws IOException, NoSuchAlgorithmException, CertificateException,KeyStoreException{
+    private static void  validatePath(String path, char[] password)throws IOException, NoSuchAlgorithmException, CertificateException,KeyStoreException{
 
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
 

@@ -22,10 +22,11 @@ public class ServerStartup {
             String tempPass = kb.nextLine();
 
             try{
-            TlsConfig.configureTrustStore(tempPath, tempPass);
+            TlsConfig.configureKeyStore(path, password);
 
             path = tempPath;
             password = tempPass;
+
             } catch (IOException io){
                 System.err.println("Unable to open/read file");
 
