@@ -61,15 +61,7 @@ public class Server {
                 Admission.serverAdmission(newClient, clientList);
 
             } catch (IOException e){
-                if (client != null) {
-                    try {
-                        client.close();
-                    } catch (IOException closeError) {
-                        e.addSuppressed(closeError);
-                    }
-                }
-                System.out.println("Connection Failed");
-                e.printStackTrace();
+                
             }
 
         }
@@ -91,7 +83,11 @@ public class Server {
                 continue;
             }
 
+            try{
             client.sendMessage(handler.getUsername() + ": " + message);
+            } catch (IOException io){
+                continue;
+            }
         }
 
     }
@@ -109,9 +105,15 @@ public class Server {
      * This method is responsible for removing a client from the server
      * @param username - Representing the username of the client to be removed
      */
-    public void removeClient(String username){
-        clientList.remove(username);
-        System.out.println(username + " has disconnected from the server!");
+    public void removeClient(ClientHandler client){
+        try{
+            client.closeConnection();
+
+        }catch (IOException e){
+        }
+        
+        clientList.remove(client.getUsername());
+        System.out.println(client.getUsername()+ " has disconnected from the server!");
     }
     
 }

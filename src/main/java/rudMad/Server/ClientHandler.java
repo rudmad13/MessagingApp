@@ -50,18 +50,12 @@ public class ClientHandler implements Runnable{
         return this.out;
     }
 
-    public void closeConnection(){
-        try{
-            client.close();
-
-        } catch (IOException e){
-            System.out.println("Connection has been closed!");
-            e.printStackTrace();
-        }
+    public void closeConnection() throws IOException{
+        client.close();
     }
 
-
-    public void run(){
+    @Override
+    public void run() {
 
         receiveMessage();
         
@@ -69,8 +63,9 @@ public class ClientHandler implements Runnable{
 
 
     /**
-     * This method is responsible for receiving messages from the client and sending them to the server
-     * to be broadcasted to everyone else on the server
+     * Waits to receieve messages from the client
+     * Reads input and broadscasts input to the rest of the connection on the server
+     * @throws IOException Error network I/O
      */
     public void receiveMessage(){ // Send to the server
         try{
@@ -82,21 +77,21 @@ public class ClientHandler implements Runnable{
         } catch (IOException e){
             e.printStackTrace();
         } finally {
-            server.removeClient(this.username);
+            server.removeClient(this);
         }
 
     }
 
 
-    public void sendMessage(String message){//Send to the client. Server -> client
+    /**
+     * Server sends 'message' to client
+     * @param String message to write to client
+     */
+    public void sendMessage(String message)throws IOException{
 
-        try{
             out.write(message);
             out.newLine();
             out.flush();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
 
     }
 

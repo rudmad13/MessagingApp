@@ -33,7 +33,12 @@ public class Admission {
     }
 
 
-
+    /**
+     * Checks for duplicate usernames in the server. 
+     * Rejected if username is taken.
+     * Accepted if username is not taken. Added to the clientlist of the server
+     * @throws IOException Cannot read from input. Connection might be lost
+     */
     public static void serverAdmission(ClientHandler client,  HashMap<String, ClientHandler> clientList) throws IOException{
 
         BufferedReader in = client.getInput();
