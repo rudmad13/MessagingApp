@@ -1,6 +1,7 @@
 package rudMad;
 
 import rudMad.Server.Server;
+import rudMad.Server.ServerStartup;
 import rudMad.Client.ClientStartup;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class Main {
 
         switch (args[0]){
             case "-s":
-                startServer(Integer.parseInt(args[1]));
+                startServer();
                 break;
 
             case "-c":
@@ -33,15 +34,10 @@ public class Main {
     }
 
 
-    private static void startServer(int port){
-
-        try {
-            Server server = new Server(port);
-            server.start();
-        } catch (IOException | IllegalArgumentException e) {
-            System.err.println("Unable to start TLS server: " + e.getMessage());
-        }
-
+    private static void startServer(){
+        Scanner input = new Scanner(System.in);
+        
+        ServerStartup.start(input).start();
 
     }
 
