@@ -22,7 +22,7 @@ public class ServerStartup {
             String tempPass = kb.nextLine();
 
             try{
-            TlsConfig.configureKeyStore(path, password);
+            TlsConfig.configureKeyStore(path, tempPass);
 
             path = tempPath;
             password = tempPass;
