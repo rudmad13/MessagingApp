@@ -46,6 +46,8 @@ public class ClientStartup {
                 username = temp;
             }catch (ProtocolException i){
                 System.err.println("Username is taken!");
+                connection.close();
+                connection = null;
             } catch (IOException e){
                 System.err.println("Unable to connect try again: " + e.getMessage());
             }

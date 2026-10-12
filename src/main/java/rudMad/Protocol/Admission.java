@@ -47,6 +47,7 @@ public class Admission {
 
         if(clientList.containsKey(username)){
             client.sendMessage(AdmissionResponse.REJECTED.name());
+            client.closeConnection();
 
         }else {
             client.setUsername(username);
