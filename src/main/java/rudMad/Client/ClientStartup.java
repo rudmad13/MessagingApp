@@ -22,6 +22,7 @@ public class ClientStartup {
                 String password = kb.nextLine();
                 //Validate 
                 TlsConfig.configureTrustStore(path, password);
+                TlsConfig.configureKeyStore(path, password);
                 break;
             } catch (GeneralSecurityException e){
                 System.err.println(e.getMessage());

@@ -35,7 +35,7 @@ public class Server {
         SSLServerSocketFactory factory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
         this.server = (SSLServerSocket) factory.createServerSocket(port);
         this.server.setEnabledProtocols(new String[] {"TLSv1.3"});
-        this.server.setNeedClientAuth(false);  
+        this.server.setNeedClientAuth(True);  
     }
     /**
      * This method is a loop. The server accepts a connection. Checks for 

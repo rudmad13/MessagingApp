@@ -23,6 +23,7 @@ public class ServerStartup {
 
             try{
             TlsConfig.configureKeyStore(tempPath, tempPass);
+            TlsConfig.configureTrustStore(tempPath, tempPass);
 
             path = tempPath;
             password = tempPass;
