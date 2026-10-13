@@ -28,15 +28,16 @@ public class WriterThread implements Runnable {
         try{
             String line;
             while (!socket.isClosed() && (line = scanner.nextLine()) != null) {
-                out.write(line);
-                out.newLine();
-                out.flush();
-
-                if (line.equalsIgnoreCase("quit()")) {
+                if (line.equalsIgnoreCase("/quit")) {
                     System.out.println("Disconnecting from the server...");
                     socket.close();
                     break;
                 }
+                out.write(line);
+                out.newLine();
+                out.flush();
+
+                
             }
         } catch (Exception e) {
             System.out.println("Connection has been closed!");

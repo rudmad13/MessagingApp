@@ -16,7 +16,7 @@ public class ClientStartup {
         while(true){
             try{
                 //Prompt for truststore information
-                System.out.println("Enter absolute path for truststore: ");
+                System.out.println("Enter path for truststore: ");
                 String path = kb.nextLine();
                 System.out.println("Enter password for truststore: ");
                 String password = kb.nextLine();

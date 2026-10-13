@@ -84,8 +84,8 @@ The client loads its TLS settings from the truststore prompts. The server addres
 port, and username are entered interactively. No TLS system properties or connection arguments are needed in the launch command.
 If the truststore cannot be loaded, the client asks for its path and password again.
 
-Once connected, type a message and press Enter to send it. Type `quit()` and press
-Enter to disconnect.
+Once connected, type a message and press Enter to send it. Type `/quit` and press
+Enter to disconnect from the server and exit the client.
 
 ## Developers
 

@@ -16,7 +16,7 @@ public class ServerStartup {
 
         while(path == null && password == null){
 
-            System.out.println("Enter absolute path for Keystore: ");
+            System.out.println("Enter path for Keystore: ");
             String tempPath = kb.nextLine();
             System.out.println("Enter password for Keystore");
             String tempPass = kb.nextLine();
