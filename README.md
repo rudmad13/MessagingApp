@@ -1,4 +1,4 @@
-# TCP Server (Chat server)
+# Messaging App
 
 ## Table of contents
 
@@ -100,6 +100,7 @@ Enter to disconnect from the server and exit the client.
 mvn clean package
 ```
 
+<<<<<<< HEAD
 ## Server TLS setup
 
 Both server and client require TLS 1.3. Client certificates are not required.
@@ -152,3 +153,9 @@ as described in [Client](#client). The client requires a PKCS12 truststore at st
 The host or IP must match the certificate's Subject Alternative Name. The development
 certificate supports localhost and 127.0.0.1. Certificate trust and address verification
 remain enabled; there is no plaintext fallback.
+=======
+#Future Features
+- Encryption 
+- GUI
+- User Authentication
+>>>>>>> d29babb30eedbc9b0b34ef053a843fc05003cb1b
