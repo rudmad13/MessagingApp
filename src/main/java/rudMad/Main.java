@@ -1,6 +1,5 @@
 package rudMad;
 
-import rudMad.Server.Server;
 import rudMad.Server.ServerStartup;
 import rudMad.Client.ClientStartup;
 

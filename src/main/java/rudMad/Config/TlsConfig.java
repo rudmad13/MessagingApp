@@ -1,4 +1,4 @@
-package rudMad.Client;
+package rudMad.Config;
 
 import java.io.IOException;
 import java.io.InputStream;

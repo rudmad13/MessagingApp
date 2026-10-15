@@ -1,4 +1,4 @@
-package rudMad.Threads;
+package rudMad.Client.Threads;
 
 import java.io.BufferedWriter;
 import java.net.Socket;

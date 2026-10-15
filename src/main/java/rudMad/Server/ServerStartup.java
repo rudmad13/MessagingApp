@@ -5,7 +5,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStoreException;
 import java.util.Scanner;
 
-import rudMad.Client.TlsConfig;
+import rudMad.Config.TlsConfig;
 
 public class ServerStartup {
 

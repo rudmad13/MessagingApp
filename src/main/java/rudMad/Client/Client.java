@@ -1,8 +1,13 @@
 package rudMad.Client;
 
-import rudMad.Threads.ServerListener;
-import rudMad.Threads.WriterThread;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Scanner;
+
+import rudMad.Client.Commands.CommandHandler;
+import rudMad.Client.Threads.ServerListener;
+import rudMad.Client.Threads.WriterThread;
+import rudMad.Client.UDP.UdpConnection;
 
 
 
@@ -12,20 +17,69 @@ public class Client {
 
     private TlsConnection connection;
     private String username;
+    private UdpConnection udpConnection;
     private final Scanner input;
+
+    private final CommandHandler commandHandler;
     
 
 
     public Client(TlsConnection connection, String username) {
-        this(connection, username, new Scanner(System.in));
-    }
-
-    public Client(TlsConnection connection, String username, Scanner input) {
-        this.input = input;
+        
         this.connection = connection;
         this.username = username;
+        this.input = new Scanner(System.in);
+        this.commandHandler = new CommandHandler(this);
     }
 
+
+    public void setTlsConnection(TlsConnection connection){
+        this.connection = connection;
+
+    }
+
+    public void setUdpConnection(UdpConnection connection){
+        this.udpConnection = connection;
+    
+    }
+
+    public String getUsername(){
+        return this.username;
+
+    }
+
+    public UdpConnection getUdpConnection(){
+        return this.udpConnection;
+    }
+
+    public void closeUdpConnection(){
+
+        if(udpConnection == null){
+            return;
+        }
+
+        udpConnection.close();
+    }
+
+    public void closeTlsConnection(){
+
+        try{
+        connection.close();
+        } catch(IOException e){
+            System.err.println("Error closing connection: " + e.getMessage());
+
+        }
+    }
+
+
+    public void sendMessage(String message) throws IOException{
+        BufferedWriter out = connection.getOut();
+
+        out.write(message);
+        out.newLine();
+        out.flush();
+
+    }
     
     /**
      * This method starts the client by creating and starting two threads:
@@ -35,13 +89,24 @@ public class Client {
     public void start() {
 
         ServerListener listener = new ServerListener(connection.getIn());
-        WriterThread writer = new WriterThread(connection, input);
-
         Thread listenerThread = new Thread(listener);
-        Thread writerThread = new Thread(writer);
-
         listenerThread.start();
-        writerThread.start();
+
+        while(listenerThread.isAlive() && input.hasNextLine()){
+            String message = input.nextLine();
+
+            if (message.startsWith("/")){
+                commandHandler.handle(message);
+            }else{
+                try{
+                    sendMessage(message);
+
+                } catch (IOException e){
+                    System.err.println("Error: " + e.getMessage());
+                }
+            }
+
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import java.net.ProtocolException;
 import java.security.GeneralSecurityException;
 import java.util.Scanner;
 
+import rudMad.Config.TlsConfig;
 import rudMad.Protocol.Admission;
 
 
