@@ -25,7 +25,7 @@ public class ClientStartup {
                 TlsConfig.configureTrustStore(path, password);
                 TlsConfig.configureKeyStore(path, password);
                 break;
-            } catch (GeneralSecurityException e){
+            }catch (GeneralSecurityException e){
                 System.err.println(e.getMessage());
             }catch (IOException i){
                 System.err.println(i.getMessage());

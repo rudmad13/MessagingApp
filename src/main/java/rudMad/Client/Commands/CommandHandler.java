@@ -13,7 +13,7 @@ public class CommandHandler {
     public CommandHandler(Client client){
         this.client = client;
 
-        commands.put("quit()", new QuitCommand());
+        commands.put("quit", new QuitCommand());
     }
 
 

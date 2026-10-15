@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import rudMad.Client.Commands.CommandHandler;
 import rudMad.Client.Threads.ServerListener;
-import rudMad.Client.Threads.WriterThread;
 import rudMad.Client.UDP.UdpConnection;
 
 
