@@ -14,6 +14,7 @@ public class CommandHandler {
         this.client = client;
 
         commands.put("quit", new QuitCommand());
+        commands.put("joinvoice", new JoinVoiceCommand());
     }
 
 
