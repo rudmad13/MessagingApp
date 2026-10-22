@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import rudMad.Client.Commands.CommandHandler;
-import rudMad.Client.ServerResponses.ServerResponse;
 import rudMad.Client.ServerResponses.ServerResponseHandler;
 import rudMad.Client.Threads.ServerListener;
 import rudMad.Client.UDP.UdpConnection;
@@ -41,7 +40,7 @@ public class Client {
 
     }
 
-    public void setUdpConnection(UdpConnection connection){
+    public synchronized void setUdpConnection(UdpConnection connection){
         this.udpConnection = connection;
     
     }
@@ -51,11 +50,11 @@ public class Client {
 
     }
 
-    public UdpConnection getUdpConnection(){
+    public synchronized UdpConnection getUdpConnection(){
         return this.udpConnection;
     }
 
-    public void closeUdpConnection(){
+    public synchronized void closeUdpConnection(){
 
         if(udpConnection == null){
             return;
@@ -76,7 +75,7 @@ public class Client {
     }
 
 
-    public void sendMessage(String message) throws IOException{
+    public synchronized void sendMessage(String message) throws IOException{
         BufferedWriter out = connection.getOut();
 
         out.write(message);
@@ -85,7 +84,7 @@ public class Client {
 
     }
     
-    public boolean openUDPPort(int localPort) {
+    public synchronized boolean openUDPPort(int localPort) {
         if (udpConnection != null) {
             System.err.println("A UDP connection is already open.");
             return false;
@@ -100,16 +99,18 @@ public class Client {
         }
     }
 
-    public void ConnectToServer(int remotePort) {
+    public synchronized boolean ConnectToServer(int remotePort) {
         if (udpConnection == null) {
             System.err.println("Open a local UDP port before connecting to the server.");
-            return;
+            return false;
         }
 
         try {
             udpConnection.connect(connection.getHost(), remotePort);
+            return true;
         } catch (IOException e) {
             System.err.println("Error connecting UDP socket: " + e.getMessage());
+            return false;
         }
     }
     /**
@@ -119,7 +120,7 @@ public class Client {
      */
     public void start() {
 
-        ServerListener listener = new ServerListener(connection.getIn());
+        ServerListener listener = new ServerListener(connection.getIn(), responseHandler);
         Thread listenerThread = new Thread(listener);
         listenerThread.start();
 
