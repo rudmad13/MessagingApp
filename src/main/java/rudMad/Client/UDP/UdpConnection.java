@@ -9,14 +9,14 @@ public class UdpConnection implements AutoCloseable{
 
     private DatagramSocket socket;
 
-    public UdpConnection(String host, int port) throws IOException{
+    /** Opens a UDP socket bound to the local port. */
+    public UdpConnection(int localPort) throws IOException {
+        socket = new DatagramSocket(localPort);
+    }
 
-        socket = new DatagramSocket(port); //open local port for communication
-
-        InetSocketAddress address = new InetSocketAddress(host, port);
-
-        socket.connect(address);
-        
+    /** Sets the remote destination for this socket. */
+    public void connect(String host, int remotePort) throws IOException {
+        socket.connect(new InetSocketAddress(host, remotePort));
     }
 
     @Override

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import rudMad.Client.Commands.CommandHandler;
+import rudMad.Client.ServerResponses.ServerResponse;
+import rudMad.Client.ServerResponses.ServerResponseHandler;
 import rudMad.Client.Threads.ServerListener;
 import rudMad.Client.UDP.UdpConnection;
 
@@ -20,6 +22,7 @@ public class Client {
     private final Scanner input;
 
     private final CommandHandler commandHandler;
+    private final ServerResponseHandler responseHandler;
     
 
 
@@ -29,6 +32,7 @@ public class Client {
         this.username = username;
         this.input = new Scanner(System.in);
         this.commandHandler = new CommandHandler(this);
+        this.responseHandler = new ServerResponseHandler(this);
     }
 
 
@@ -58,6 +62,7 @@ public class Client {
         }
 
         udpConnection.close();
+        udpConnection = null;
     }
 
     public void closeTlsConnection(){
@@ -80,6 +85,33 @@ public class Client {
 
     }
     
+    public boolean openUDPPort(int localPort) {
+        if (udpConnection != null) {
+            System.err.println("A UDP connection is already open.");
+            return false;
+        }
+
+        try {
+            udpConnection = new UdpConnection(localPort);
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error opening UDP port: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void ConnectToServer(int remotePort) {
+        if (udpConnection == null) {
+            System.err.println("Open a local UDP port before connecting to the server.");
+            return;
+        }
+
+        try {
+            udpConnection.connect(connection.getHost(), remotePort);
+        } catch (IOException e) {
+            System.err.println("Error connecting UDP socket: " + e.getMessage());
+        }
+    }
     /**
      * This method starts the client by creating and starting two threads:
      * 1. ServerListener thread: Listens for messages from the server and prints them

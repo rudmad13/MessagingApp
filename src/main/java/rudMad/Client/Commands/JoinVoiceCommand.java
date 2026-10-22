@@ -29,10 +29,15 @@ public class JoinVoiceCommand implements Command{
             return;
         }
 
+        if (!client.openUDPPort(port)) {
+            return;
+        }
+
         try{
             client.sendMessage("/joinvoice " + port);
 
         } catch (IOException e){
+            client.closeUdpConnection();
             System.out.println("Failed to send voice request: " + e.getMessage());
         }
     }

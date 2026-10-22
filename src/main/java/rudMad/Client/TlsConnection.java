@@ -52,6 +52,11 @@ public class TlsConnection {
         return socket;
     }
 
+    /** Returns the remote IP address of the connected socket. */
+    public String getHost() {
+        return socket.getInetAddress().getHostAddress();
+    }
+
     public BufferedWriter getOut() {
         return out;
     }
