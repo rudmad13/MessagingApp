@@ -9,7 +9,7 @@ public class JoinVoiceCommand implements Command{
     @Override
     public void execute(Client client, String[] args) {
         
-        if (args.length != 2){
+        if (args.length != 1){
             System.out.println("Usage: /joinvoice <port>");
             return;
         }
@@ -17,7 +17,7 @@ public class JoinVoiceCommand implements Command{
         int port;
 
         try{
-            port = Integer.parseInt(args[1]);
+            port = Integer.parseInt(args[0]);
 
         } catch (NumberFormatException e){
             System.out.println("Port must be a number");

@@ -1,5 +1,6 @@
 package rudMad.Client.Commands;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import rudMad.Client.Client;
@@ -29,7 +30,7 @@ public class CommandHandler {
             return;
         }
 
-        command.execute(client, parts);
+        command.execute(client, Arrays.copyOfRange(parts, 1, parts.length));
 
     }
 
