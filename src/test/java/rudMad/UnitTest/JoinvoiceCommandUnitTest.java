@@ -1,4 +1,4 @@
-package rudMad;
+package rudMad.UnitTest;
 
 
 import org.junit.jupiter.api.BeforeEach;
