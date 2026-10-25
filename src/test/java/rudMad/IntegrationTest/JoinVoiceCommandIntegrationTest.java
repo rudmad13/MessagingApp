@@ -5,6 +5,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
@@ -61,6 +63,34 @@ public class JoinVoiceCommandIntegrationTest {
         String args = command + " -2";
 
         handler.handle(args); 
+
+        verify(client, never()).openUDPPort(anyInt());
+        verify(client, never()).sendMessage(anyString());
+
+    }
+
+    @Test
+    void CorrectInput() throws IOException {
+
+        String args = command + " 9001";
+
+        when(client.openUDPPort(9001)).thenReturn(true);
+
+
+        handler.handle(args);
+
+        verify(client).openUDPPort(9001);
+
+        verify(client).sendMessage(command + " 9001");
+    
+    }
+
+    @Test
+    void InvalidCommandSyntax() throws IOException{
+
+        String args = command;
+
+        handler.handle(args);
 
         verify(client, never()).openUDPPort(anyInt());
         verify(client, never()).sendMessage(anyString());
