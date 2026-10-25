@@ -12,7 +12,7 @@ public class ServerResponseHandler {
         response.put("joinvoice", new JoinVoiceResponse());
     }
 
-    public void handle(String message) {
+    public boolean handle(String message) {
 
         String[] parts = message.substring(1).trim().split("\\s+");
 
@@ -22,13 +22,13 @@ public class ServerResponseHandler {
         ServerResponse command = response.get(parts[1]);
         if (command == null) {
             System.err.println("Unknown response command: " + parts[1]);
-            return;
+            return false;
         }
 
         if (status.equals("success")) {
-            command.onSuccess(client, parts);
+            return command.onSuccess(client, parts);
         } else {
-            command.OnFailure(client, parts);
+            return command.OnFailure(client, parts);
         }
     }
 }

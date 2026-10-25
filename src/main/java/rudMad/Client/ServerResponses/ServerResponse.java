@@ -4,8 +4,8 @@ import rudMad.Client.Client;
 
 public interface ServerResponse {
 
-    void onSuccess(Client client, String[] args);
+    boolean onSuccess(Client client, String[] args);
 
-    void OnFailure(Client client, String[] args);
+    boolean OnFailure(Client client, String[] args);
 
 }
