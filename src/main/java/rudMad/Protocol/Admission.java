@@ -5,10 +5,15 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import rudMad.Server.ClientHandler;
+import rudMad.Server.Server;
 
 public class Admission {
+
+
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
 
 
 
@@ -48,6 +53,7 @@ public class Admission {
         if(clientList.containsKey(username)){
             client.sendMessage(AdmissionResponse.REJECTED.name());
             client.closeConnection();
+            logger.info("Connection failed due to duplicate name: " + username);
 
         }else {
             client.setUsername(username);
@@ -55,7 +61,7 @@ public class Admission {
             Thread thread = new Thread(client);
             thread.start();
             client.sendMessage(AdmissionResponse.ACCEPTED.name());
-            System.out.println(username + " has connected to the server");
+            logger.info(username + " has connected to the server");
 
         }
 

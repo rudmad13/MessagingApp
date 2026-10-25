@@ -2,6 +2,7 @@ package rudMad;
 
 import rudMad.Server.ServerStartup;
 import rudMad.Client.ClientStartup;
+import rudMad.Config.LoggingConfig;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -34,6 +35,12 @@ public class Main {
 
 
     private static void startServer(){
+        try {
+            LoggingConfig.configureServerLogging();
+        } catch (IOException | SecurityException e) {
+            System.err.println("Unable to initialize server logging: " + e.getMessage());
+            return;
+        }
         Scanner input = new Scanner(System.in);
         
         ServerStartup.start(input).start();

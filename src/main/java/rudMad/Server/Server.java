@@ -13,12 +13,16 @@ import javax.net.ssl.SSLSocket;
 
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import rudMad.Protocol.Admission;
+import rudMad.Config.LoggingConfig;
 
 
 
 public class Server {
+
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
 
     private HashMap<String,ClientHandler> clientList; 
     private final SSLServerSocket server;
@@ -36,6 +40,8 @@ public class Server {
         this.server = (SSLServerSocket) factory.createServerSocket(port);
         this.server.setEnabledProtocols(new String[] {"TLSv1.3"});
         this.server.setNeedClientAuth(true);  
+
+        LoggingConfig.configureServerLogging();
     }
     /**
      * This method is a loop. The server accepts a connection. Checks for 
@@ -76,7 +82,6 @@ public class Server {
      */
     public void broadcast(String message, ClientHandler handler){
 
-        //Debug purposes: System.out.println(handler.getUsername() + ": " + message);
 
         for(ClientHandler client : clientList.values()){
 
@@ -114,7 +119,7 @@ public class Server {
         }
 
         clientList.remove(client.getUsername());
-        System.out.println(client.getUsername()+ " has disconnected from the server!");
+        logger.info( client.getUsername() + " has disconnected from the server!");
     }
     
 }

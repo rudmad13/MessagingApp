@@ -5,3 +5,4 @@ target/
 *.class
 .vscode/
 .DS_Store
+logs/
