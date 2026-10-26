@@ -14,10 +14,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import rudMad.Server.Commands.CommandHandler;
+
 public class ClientHandler implements Runnable{
 
     private Socket client; //Server endpoint for this client connection
     private Server server;
+    private final CommandHandler commandHandler;
     private BufferedReader in; //Data coming into the server from this client
     private BufferedWriter out; //Data going out from the server to this client
     private String username;//Unique name on the server
@@ -25,6 +28,7 @@ public class ClientHandler implements Runnable{
     public ClientHandler(Socket client, Server server){
         this.client = client;
         this.server = server;
+        this.commandHandler = new CommandHandler(this);
 
         try{
         this.in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -64,7 +68,7 @@ public class ClientHandler implements Runnable{
 
     /**
      * Waits to receieve messages from the client
-     * Reads input and broadscasts input to the rest of the connection on the server
+     * Routes slash commands to the handler and broadcasts ordinary chat messages.
      * @throws IOException Error network I/O
      */
     public void receiveMessage(){ // Send to the server
@@ -72,7 +76,11 @@ public class ClientHandler implements Runnable{
             String message;
 
             while((message = in.readLine()) != null){
-                server.broadcast(message, this);
+                if (message.startsWith("/")) {
+                    commandHandler.handle(message);
+                } else {
+                    server.broadcast(message, this);
+                }
             }
         } catch (IOException e){
             e.printStackTrace();
