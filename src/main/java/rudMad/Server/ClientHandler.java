@@ -7,6 +7,8 @@
 package rudMad.Server;
 
 import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -54,6 +56,12 @@ public class ClientHandler implements Runnable{
         return this.out;
     }
 
+    /** Uses this TCP peer's IP and the UDP port supplied by the client. */
+    public int joinVoice(int clientPort) throws SocketException {
+        InetSocketAddress udpAddress = new InetSocketAddress(client.getInetAddress(), clientPort);
+        return server.joinVoice(username, udpAddress);
+    }
+
     public void closeConnection() throws IOException{
         client.close();
     }
@@ -95,7 +103,7 @@ public class ClientHandler implements Runnable{
      * Server sends 'message' to client
      * @param String message to write to client
      */
-    public void sendMessage(String message)throws IOException{
+    public synchronized void sendMessage(String message)throws IOException{
 
             out.write(message);
             out.newLine();

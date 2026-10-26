@@ -6,6 +6,8 @@
 package rudMad.Server;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.InetSocketAddress;
 
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
@@ -26,6 +28,7 @@ public class Server {
 
     private HashMap<String,ClientHandler> clientList; 
     private final SSLServerSocket server;
+    private VoiceRelay voiceRelay;
 
 
     /**
@@ -43,6 +46,22 @@ public class Server {
 
         LoggingConfig.configureServerLogging();
     }
+    
+    public synchronized int openVoiceRelay() throws SocketException {
+        if (voiceRelay == null) {
+            voiceRelay = new VoiceRelay();
+        }
+
+        return voiceRelay.getPort();
+    }
+
+    /** Opens the shared relay before adding or updating the participant. */
+    public synchronized int joinVoice(String username, InetSocketAddress udpAddress) throws SocketException {
+        int serverPort = openVoiceRelay();
+        voiceRelay.addParticipant(username, udpAddress);
+        return serverPort;
+    }
+
     /**
      * This method is a loop. The server accepts a connection. Checks for 
      * username uniqueness. Re-Enter the loop, looking for another connection
@@ -107,6 +126,12 @@ public class Server {
         return clientList.containsKey(userName);
     }
 
+    private synchronized void removeVoiceParticipant(String username) {
+        if (voiceRelay != null && username != null) {
+            voiceRelay.removeParticipant(username);
+        }
+    }
+
     /**
      * This method is responsible for removing a client from the server
      * @param username - Representing the username of the client to be removed
@@ -118,6 +143,7 @@ public class Server {
         }catch (IOException e){
         }
 
+        removeVoiceParticipant(client.getUsername());
         clientList.remove(client.getUsername());
         logger.info( client.getUsername() + " has disconnected from the server!");
     }

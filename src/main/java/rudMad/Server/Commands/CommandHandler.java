@@ -16,8 +16,7 @@ public class CommandHandler {
 
     public CommandHandler(ClientHandler client) {
         this.client = client;
-        // Add commands directly to the map as they are implemented:
-        // commands.put("joinvoice", new JoinVoiceCommand());
+        commands.put("joinvoice", new JoinVoiceCommand());
     }
 
     public void handle(String input) throws IOException {
