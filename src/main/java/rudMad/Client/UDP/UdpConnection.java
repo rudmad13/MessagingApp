@@ -25,9 +25,9 @@ public class UdpConnection implements AutoCloseable{
     }
 
 
-    public void send(byte[] data) throws IOException {
+    public void send(byte[] data, int length) throws IOException {
 
-        DatagramPacket packet = new DatagramPacket(data, data.length);
+        DatagramPacket packet = new DatagramPacket(data, length);
 
         socket.send(packet);
     }

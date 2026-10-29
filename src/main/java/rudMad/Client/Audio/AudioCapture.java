@@ -26,7 +26,6 @@ public class AudioCapture {
         return microphone.read(buffer, 0, buffer.length);
     }
 
-
     public void close(){
         microphone.stop();
         microphone.close();
