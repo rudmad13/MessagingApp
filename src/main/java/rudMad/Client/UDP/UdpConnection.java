@@ -31,4 +31,13 @@ public class UdpConnection implements AutoCloseable{
 
         socket.send(packet);
     }
+
+    public int receive(byte[] buffer) throws IOException {
+
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+        socket.receive(packet);
+
+        return packet.getLength();
+    }
 }
