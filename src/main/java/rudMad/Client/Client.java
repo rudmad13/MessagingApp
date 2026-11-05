@@ -34,7 +34,6 @@ public class Client {
         this.responseHandler = new ServerResponseHandler(this);
     }
 
-
     public void setTlsConnection(TlsConnection connection){
         this.connection = connection;
 
@@ -74,7 +73,6 @@ public class Client {
         }
     }
 
-
     public synchronized void sendMessage(String message) throws IOException{
         BufferedWriter out = connection.getOut();
 
@@ -113,6 +111,8 @@ public class Client {
             return false;
         }
     }
+    
+    
     /**
      * This method starts the client by creating and starting two threads:
      * 1. ServerListener thread: Listens for messages from the server and prints them

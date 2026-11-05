@@ -2,6 +2,9 @@ package rudMad.Client.Audio;
 
 import java.io.IOException;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.LineUnavailableException;
+
 import rudMad.Client.UDP.UdpConnection;
 
 public class AudioReceiver implements  Runnable{
@@ -9,9 +12,9 @@ public class AudioReceiver implements  Runnable{
     private final UdpConnection connection;
     private final AudioPlayback speakers;
 
-    public AudioReceiver(AudioPlayback speakers, UdpConnection connection){
+    public AudioReceiver(AudioFormat audioFormat, UdpConnection connection) throws LineUnavailableException{
         this.connection = connection;
-        this.speakers = speakers;
+        this.speakers = new AudioPlayback(audioFormat);
     }
 
     @Override

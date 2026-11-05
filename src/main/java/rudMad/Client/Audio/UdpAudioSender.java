@@ -3,6 +3,9 @@ package rudMad.Client.Audio;
 
 import java.io.IOException;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.LineUnavailableException;
+
 import rudMad.Client.UDP.UdpConnection;
 
 public class UdpAudioSender implements Runnable{
@@ -11,8 +14,9 @@ public class UdpAudioSender implements Runnable{
     private final AudioCapture audioCapture;
     private final UdpConnection connection;
 
-    public UdpAudioSender(AudioCapture capture, UdpConnection connection){
-        this.audioCapture = capture;
+    public UdpAudioSender(AudioFormat audioFormat, UdpConnection connection) throws LineUnavailableException{
+
+        this.audioCapture = new AudioCapture(audioFormat);
         this.connection = connection; 
     }
 
