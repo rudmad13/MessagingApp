@@ -1,9 +1,7 @@
 package rudMad.Client.Audio;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 
-import rudMad.Client.UDP.UdpConnection;
 
 public class VoiceSession {
 
@@ -13,23 +11,29 @@ public class VoiceSession {
     private Thread senderThread;
     private Thread receiverThread;
 
-    public VoiceSession(AudioFormat audioFormat,UdpConnection connection) throws LineUnavailableException{
-        this.sender = new UdpAudioSender(audioFormat, connection);
-        this.receiver = new AudioReceiver(audioFormat, connection);
+    public VoiceSession(UdpAudioSender sender, AudioReceiver receiver) throws LineUnavailableException{
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
 
 
 
-
+    
     public void start(){
+
+
 
         senderThread = new Thread(sender);
         receiverThread = new Thread(receiver, "Playback");
 
-
     }
 
+
+    public void stop(){
+        senderThread.interrupt();
+        receiverThread.interrupt();
+    }
 
 
 

@@ -14,9 +14,9 @@ public class UdpAudioSender implements Runnable{
     private final AudioCapture audioCapture;
     private final UdpConnection connection;
 
-    public UdpAudioSender(AudioFormat audioFormat, UdpConnection connection) throws LineUnavailableException{
+    public UdpAudioSender(AudioCapture microphone, UdpConnection connection) throws LineUnavailableException{
 
-        this.audioCapture = new AudioCapture(audioFormat);
+        this.audioCapture = microphone;
         this.connection = connection; 
     }
 

@@ -33,7 +33,9 @@ public class JoinVoiceCommand implements Command{
             return;
         }
 
+        
         try{
+            
             client.sendMessage("/joinvoice " + port);
 
         } catch (IOException e){
