@@ -1,6 +1,5 @@
 package rudMad.Client.Audio;
 
-import javax.security.auth.Subject;
 import javax.sound.sampled.AudioFormat;
 
 public final class AudioConfig {

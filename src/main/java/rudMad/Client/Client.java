@@ -4,6 +4,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.sound.sampled.LineUnavailableException;
+
+import rudMad.Client.Audio.VoiceSession;
+import rudMad.Client.Audio.VoiceSessionFactory;
 import rudMad.Client.Commands.CommandHandler;
 import rudMad.Client.ServerResponses.ServerResponseHandler;
 import rudMad.Client.Threads.ServerListener;
@@ -18,13 +22,13 @@ public class Client {
     private TlsConnection connection;
     private String username;
     private UdpConnection udpConnection;
+    private VoiceSession voiceSession;
+
     private final Scanner input;
 
     private final CommandHandler commandHandler;
     private final ServerResponseHandler responseHandler;
     
-
-
     public Client(TlsConnection connection, String username) {
         
         this.connection = connection;
@@ -111,7 +115,26 @@ public class Client {
             return false;
         }
     }
+   
     
+    
+    public synchronized boolean startVoiceSession(){
+        if(voiceSession == null && udpConnection != null){
+
+            try{
+                voiceSession = VoiceSessionFactory.create(udpConnection);
+                voiceSession.start();
+                return true;
+            } catch (LineUnavailableException e){
+                System.err.println("Unable to start voice session: " + e.getMessage());
+                return false;
+            }
+
+        }
+
+        return false;
+
+    }
     
     /**
      * This method starts the client by creating and starting two threads:

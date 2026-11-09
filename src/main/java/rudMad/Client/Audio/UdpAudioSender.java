@@ -3,7 +3,6 @@ package rudMad.Client.Audio;
 
 import java.io.IOException;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 
 import rudMad.Client.UDP.UdpConnection;
