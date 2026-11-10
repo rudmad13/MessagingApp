@@ -10,6 +10,7 @@ public class QuitCommand implements Command{
     public void execute(Client client, String[] args) {
 
         client.closeTlsConnection();
+        client.closeVoiceSession();
         client.closeUdpConnection();
     }
 

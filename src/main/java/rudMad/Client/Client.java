@@ -116,9 +116,8 @@ public class Client {
         }
     }
    
-    
-    
     public synchronized boolean startVoiceSession(){
+
         if(voiceSession == null && udpConnection != null){
 
             try{
@@ -133,6 +132,12 @@ public class Client {
         }
 
         return false;
+
+    }
+
+    public synchronized void closeVoiceSession(){
+        voiceSession.stop();
+        voiceSession = null;
 
     }
     

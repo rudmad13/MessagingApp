@@ -13,19 +13,26 @@ public class JoinVoiceResponse implements ServerResponse {
 
         int remotePort = Integer.parseInt(args[2]);
 
+        //Link udp connection to host
         if (!client.ConnectToServer(remotePort)) {
             client.closeUdpConnection();
             return false;
         }
 
-        System.out.println("Voice UDP destination configured on server port " + remotePort + ".");
-        return true;
+        //start voice session
+        if(client.startVoiceSession()){
+
+            System.out.println("Voice UDP destination configured on server port " + remotePort + ".");
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public boolean OnFailure(Client client, String[] args) {
         client.closeUdpConnection();
-        System.out.println("Voice join was unsuccessful.");
+        System.out.println("Voice join was unsuccessful. Closing local UDP port");
         return false;
     }
 }
