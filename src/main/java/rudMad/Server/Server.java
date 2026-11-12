@@ -62,6 +62,7 @@ public class Server {
             voiceSession.start();
             } catch (IOException e){
                 System.err.println("Unable to open port for voice session: " + e.getMessage());
+                return -1;
             }
         }
 
