@@ -52,13 +52,14 @@ public class Server {
     
 
     /**
-     * This class will create and return the local port that is being used for the voice session.
+     * This class will create start and return the local port the voice session is working on
      * @return int - Representing the local port that is opened for the voice session
      */
     public synchronized int openVoiceSession() {
         if(voiceSession == null){
             try{
             voiceSession = new ServerVoiceSession(new VoiceRelay());
+            voiceSession.start();
             } catch (IOException e){
                 System.err.println("Unable to open port for voice session: " + e.getMessage());
             }
