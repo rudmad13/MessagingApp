@@ -1,4 +1,4 @@
-package rudMad.Server;
+package rudMad.Server.VoiceChannel;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -79,6 +79,9 @@ public class VoiceRelay implements AutoCloseable, Runnable{
             }
             } catch (IOException e){
                 System.err.println("Error receiving packets!: "+ e.getMessage());
+            }finally{
+                //Thread is exiting so it shold clean up all resources.
+                close();
             }
 
         }

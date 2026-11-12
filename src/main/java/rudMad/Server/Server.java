@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import rudMad.Protocol.Admission;
+import rudMad.Server.VoiceChannel.VoiceRelay;
 import rudMad.Config.LoggingConfig;
 
 
