@@ -69,22 +69,23 @@ public class VoiceRelay implements AutoCloseable, Runnable{
 
         byte[] buffer = new byte[640];//With current audio format this should equates to about 20 milliseconds of audio
         DatagramPacket payload = new DatagramPacket(buffer,buffer.length);
-        while(!Thread.currentThread().isInterrupted()){
-
-            try{
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+            payload.setLength(buffer.length);
             socket.receive(payload);
-            if(checkSender((InetSocketAddress)payload.getSocketAddress())){
+
+            if (checkSender((InetSocketAddress) payload.getSocketAddress())) {
                 forwardPacket(payload);
-
             }
-            } catch (IOException e){
-                System.err.println("Error receiving packets!: "+ e.getMessage());
-            }finally{
-                //Thread is exiting so it shold clean up all resources.
-                close();
             }
-
+        } catch (IOException e) {
+            if (!socket.isClosed()) {
+            System.err.println("Error receiving packets: " + e.getMessage());
+            }
+        } finally {
+            close();
         }
     }
-
 }
+
+
