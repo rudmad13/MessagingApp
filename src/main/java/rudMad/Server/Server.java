@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import rudMad.Protocol.Admission;
+import rudMad.Server.VoiceChannel.ServerVoiceSession;
 import rudMad.Server.VoiceChannel.VoiceRelay;
 import rudMad.Config.LoggingConfig;
 
@@ -29,7 +30,8 @@ public class Server {
 
     private HashMap<String,ClientHandler> clientList; 
     private final SSLServerSocket server;
-    private VoiceRelay voiceRelay;
+
+    private ServerVoiceSession voiceSession;    
 
 
     /**
@@ -48,18 +50,31 @@ public class Server {
         LoggingConfig.configureServerLogging();
     }
     
-    public synchronized int openVoiceRelay() throws SocketException {
-        if (voiceRelay == null) {
-            voiceRelay = new VoiceRelay();
+
+    /**
+     * This class will create and return the local port that is being used for the voice session.
+     * @return int - Representing the local port that is opened for the voice session
+     */
+    public synchronized int openVoiceSession() {
+        if(voiceSession == null){
+            try{
+            voiceSession = new ServerVoiceSession(new VoiceRelay());
+            } catch (IOException e){
+                System.err.println("Unable to open port for voice session: " + e.getMessage());
+            }
         }
 
-        return voiceRelay.getPort();
+        int port = voiceSession.getPort();
+
+        System.out.println(port);
+
+        return port;
     }
 
     /** Opens the shared relay before adding or updating the participant. */
     public synchronized int joinVoice(String username, InetSocketAddress udpAddress) throws SocketException {
-        int serverPort = openVoiceRelay();
-        voiceRelay.addParticipant(username, udpAddress);
+        int serverPort = openVoiceSession();
+        voiceSession.addParticipant(username, udpAddress);
         return serverPort;
     }
 
@@ -128,8 +143,8 @@ public class Server {
     }
 
     private synchronized void removeVoiceParticipant(String username) {
-        if (voiceRelay != null && username != null) {
-            voiceRelay.removeParticipant(username);
+        if (voiceSession != null && username != null) {
+            voiceSession.removeParticipant(username);
         }
     }
 

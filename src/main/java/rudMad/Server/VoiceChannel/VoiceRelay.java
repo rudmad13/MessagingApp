@@ -61,7 +61,7 @@ public class VoiceRelay implements AutoCloseable, Runnable{
 
     /**
      * This thread will hear for incoming packets on the socket.
-     * Checks if the sender is the voice session, if the address is then it will forward the packets to the others
+     * Checks if the sender is in the voice session, if the address is valid then it will forward the packets to others on the session
      * 
      */
     @Override
