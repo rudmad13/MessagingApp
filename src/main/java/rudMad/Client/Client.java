@@ -131,7 +131,8 @@ public class Client {
 
         }
 
-        return false;
+        voiceSession.start();
+        return true;
 
     }
 
