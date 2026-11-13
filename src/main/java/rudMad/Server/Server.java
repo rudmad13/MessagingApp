@@ -57,13 +57,7 @@ public class Server {
      */
     public synchronized int openVoiceSession()  throws IOException{
         if(voiceSession == null){
-            try{
             voiceSession = new ServerVoiceSession(new VoiceRelay());
-            voiceSession.start();
-            } catch (IOException e){
-                System.err.println("Unable to open port for voice session: " + e.getMessage());
-                return -1;
-            }
         }
 
         int port = voiceSession.getPort();
@@ -71,10 +65,18 @@ public class Server {
         System.out.println(port);
 
         return port;
+
+
     }
 
-    /** Opens the shared relay before adding or updating the participant. */
-    public synchronized int joinVoice(String username, InetSocketAddress udpAddress) throws SocketException {
+    /**
+     * Retrieves the port that the server has opened locally.
+     * Adds the user to the list.
+     * returns the local udp port
+     * @params username - Representing the username
+     * @param udpAddress - Representing the ip address of the user 
+     */
+    public synchronized int joinVoice(String username, InetSocketAddress udpAddress) throws SocketException, IOException {
         int serverPort = openVoiceSession();
         voiceSession.addParticipant(username, udpAddress);
         return serverPort;

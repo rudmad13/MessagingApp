@@ -36,7 +36,7 @@ public class JoinVoiceCommand implements Command {
         try {
             serverPort = client.joinVoice(clientPort);
         } catch (SocketException e) {
-            logger.log(Level.WARNING, "Unable to open the voice relay", e);
+            logger.log(Level.WARNING, "Unable to open the voicesession", e);
             client.sendMessage("/failure joinvoice");
             return;
         }

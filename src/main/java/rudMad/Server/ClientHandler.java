@@ -56,8 +56,11 @@ public class ClientHandler implements Runnable{
         return this.out;
     }
 
-    /** Uses this TCP peer's IP and the UDP port supplied by the client. */
-    public int joinVoice(int clientPort) throws SocketException {
+    /** 
+     * Server adds client to the voice session list. Returns the local udp port on the server.
+     * @params clientPort - Representing the client port
+     */
+    public int joinVoice(int clientPort) throws SocketException, IOException {
         InetSocketAddress udpAddress = new InetSocketAddress(client.getInetAddress(), clientPort);
         return server.joinVoice(username, udpAddress);
     }
