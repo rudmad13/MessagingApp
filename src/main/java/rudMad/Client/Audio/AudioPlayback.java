@@ -28,8 +28,9 @@ public class AudioPlayback {
 
         int offset = 0;
 
+        //Loop over payload and write to speakers
         while(offset < length){
-            int written = speakers.write(buffer, offset, length);
+            int written = speakers.write(buffer, offset, length - offset);
 
             if (written <= 0) {
                 break; 
