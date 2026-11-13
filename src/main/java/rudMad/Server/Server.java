@@ -55,7 +55,7 @@ public class Server {
      * This class will create start and return the local port the voice session is working on
      * @return int - Representing the local port that is opened for the voice session
      */
-    public synchronized int openVoiceSession() {
+    public synchronized int openVoiceSession()  throws IOException{
         if(voiceSession == null){
             try{
             voiceSession = new ServerVoiceSession(new VoiceRelay());

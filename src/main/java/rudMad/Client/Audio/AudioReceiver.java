@@ -42,6 +42,14 @@ public class AudioReceiver implements  Runnable{
         }
     }
 
+
+    /**
+     * Stops and closes speakers
+     */
+    public void stopPlayback(){
+        speakers.close();
+    }
+
     
 
 }

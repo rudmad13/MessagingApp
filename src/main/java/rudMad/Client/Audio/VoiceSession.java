@@ -35,9 +35,14 @@ public class VoiceSession {
     }
 
 
+    /**
+     * Interrupts the thread and stops the capture and playback.
+     */
     public void stop(){
         senderThread.interrupt();
         receiverThread.interrupt();
+        sender.stopCapture();
+        receiver.stopPlayback();
     }
 
 

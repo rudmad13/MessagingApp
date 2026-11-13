@@ -38,6 +38,14 @@ public class UdpAudioSender implements Runnable{
     }
 
 
+    /**
+     * Closes and stops the audio capture from the microphone.
+     */
+    public void stopCapture(){
+        audioCapture.close();
+    }
+
+
     @Override
     public void run() {
         try{
@@ -46,5 +54,8 @@ public class UdpAudioSender implements Runnable{
             System.err.println("Unable to send audio: " + e.getMessage());
         }
     }
+
+
+    
 
 }
