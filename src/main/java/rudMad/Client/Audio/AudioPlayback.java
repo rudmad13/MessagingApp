@@ -38,7 +38,6 @@ public class AudioPlayback {
 
             offset += written;
 
-
         }
     }
 

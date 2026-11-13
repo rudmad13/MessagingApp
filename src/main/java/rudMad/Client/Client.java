@@ -137,6 +137,9 @@ public class Client {
     }
 
     public synchronized void closeVoiceSession(){
+        
+        if (voiceSession == null) return;
+
         voiceSession.stop();
         voiceSession = null;
 
