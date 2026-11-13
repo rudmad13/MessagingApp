@@ -58,6 +58,7 @@ public class Server {
     public synchronized int openVoiceSession()  throws IOException{
         if(voiceSession == null){
             voiceSession = new ServerVoiceSession(new VoiceRelay());
+            voiceSession.start();
         }
 
         int port = voiceSession.getPort();
