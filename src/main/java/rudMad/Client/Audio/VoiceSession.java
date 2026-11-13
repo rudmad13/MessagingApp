@@ -19,13 +19,18 @@ public class VoiceSession {
 
 
 
-    
+    /**
+     * Starts the capture of the microphone and the playback for the speakers.
+     */
     public void start(){
 
 
 
         senderThread = new Thread(sender);
         receiverThread = new Thread(receiver, "Playback");
+
+        senderThread.start();
+        receiverThread.start();
 
     }
 
