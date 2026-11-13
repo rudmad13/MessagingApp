@@ -32,7 +32,8 @@ public class JoinVoiceResponseUnitTest {
         String[] args = {"success", "joinvoice", "9001"};
         when(client.getUdpConnection()).thenReturn(mock(UdpConnection.class));
         when(client.ConnectToServer(9001)).thenReturn(true);
-
+        when(client.startVoiceSession()).thenReturn(true);
+        
         assertTrue(response.onSuccess(client, args));
 
         verify(client).ConnectToServer(9001);

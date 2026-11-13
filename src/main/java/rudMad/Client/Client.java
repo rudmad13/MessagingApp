@@ -101,6 +101,11 @@ public class Client {
         }
     }
 
+    /**
+     * Links udp port to a remote port on the server
+     * @returns false - if local port is not open or unable to connect to remort port
+     * @return true - if able to connect to remote port
+     */
     public synchronized boolean ConnectToServer(int remotePort) {
         if (udpConnection == null) {
             System.err.println("Open a local UDP port before connecting to the server.");
@@ -137,7 +142,7 @@ public class Client {
     }
 
     public synchronized void closeVoiceSession(){
-        
+
         if (voiceSession == null) return;
 
         voiceSession.stop();
